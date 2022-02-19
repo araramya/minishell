@@ -1,0 +1,10 @@
+.vscode
+logs
+temp
+minishell
+minishell.exe
+*.o
+*.a
+*.so
+*.out
+*.log
