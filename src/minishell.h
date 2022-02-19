@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/19 19:29:14 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/19 19:43:50 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,25 @@
 # include <unistd.h>
 
 // LIBFT
-void	*ft_memcpy(void *dest, const void *src, size_t num);
-void	*ft_calloc(size_t el_num, size_t el_size);
-void	*ft_realloc(void *ptr, size_t size);
-size_t	ft_strlen(const char *str);
-char	*ft_strdup(const char *s);
-int		ft_strcmp(const char *str1, const char *str2);
-void	*ft_calloc(size_t el_num, size_t el_size);
-void	*ft_memset(void *buffer, int c, size_t size);
+void		*ft_memcpy(void *dest, const void *src, size_t num);
+void		*ft_calloc(size_t el_num, size_t el_size);
+void		*ft_realloc(void *ptr, size_t size);
+size_t		ft_strlen(const char *str);
+char		*ft_strdup(const char *s);
+int			ft_strcmp(const char *str1, const char *str2);
+void		*ft_calloc(size_t el_num, size_t el_size);
+void		*ft_memset(void *buffer, int c, size_t size);
+
+// STRING
+typedef struct s_string
+{
+	char	*buffer;
+	size_t	size;
+	size_t	capacity;
+}			t_string;
+
+void		string_init(t_string *self);
+int			string_push(t_string *self, const char *src);
+int			string_deinit(t_string *self);
 
 #endif // MINISHELL_H

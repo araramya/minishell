@@ -6,13 +6,13 @@
 #    By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/19 19:22:34 by aabajyan          #+#    #+#              #
-#    Updated: 2022/02/19 19:37:27 by aabajyan         ###   ########.fr        #
+#    Updated: 2022/02/19 19:47:08 by aabajyan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = gcc
-SRCS = $(wildcard src/ft/*.c) $(wildcard src/*.c)
+SRCS = $(wildcard src/**/*.c) $(wildcard src/*.c)
 OBJS = $(SRCS:src/%.c=obj/%.o)
 CFLAGS = -Wall -Wextra -Werror -g -O0 -I./src
 LDFLAGS = $(CFLAGS) -lreadline
