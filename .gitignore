@@ -1,6 +1,7 @@
 .vscode
 logs
 temp
+obj
 minishell
 minishell.exe
 *.o
