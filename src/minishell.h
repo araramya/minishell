@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/19 20:29:16 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/20 13:22:24 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,13 @@ t_token				*token_push(t_token *self, t_token *src);
 t_token				*token_size(t_token *self);
 void				token_destroy(t_token *self);
 void				token_print(t_token *self);
+
+// SHELL
+typedef struct s_shell
+{
+	int				code;
+}					t_shell;
+
+int					shell_start(t_shell *self);
 
 #endif // MINISHELL_H
