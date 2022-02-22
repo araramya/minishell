@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:57:15 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:20:48 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:49:24 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ const char	*token_kind_to_string(t_token_kind kind)
 {
 	if ((kind & T_BEGIN) != 0)
 		return ("T_BEGIN");
-	if ((kind & T_QUOTE) != 0)
-		return ("T_QUOTE");
 	if ((kind & T_DOUBLE_QUOTE) != 0)
 		return ("T_DOUBLE_QUOTE");
 	if ((kind & T_WHITESPACE) != 0)

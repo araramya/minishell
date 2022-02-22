@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:23:12 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:23:17 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:45:17 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,12 @@ void	node_print(t_node *self, int indent)
 		node_print_indent(indent);
 		printf("in_quote:\n");
 		node_print(self->in_quote, indent + 1);
+	}
+	if (self->pipe)
+	{
+		node_print_indent(indent);
+		printf("pipe:\n");
+		node_print(self->pipe, indent + 1);
 	}
 	if (self->next)
 		node_print(self->next, indent - 1);

@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:26:19 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:25:05 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:48:28 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_token	*lexer_single_quote(t_lexer *self)
 	char	peek;
 
 	if (self->in_quotes)
-		return (token_create(T_QUOTE, ft_strdup("'")));
+		return (token_create(T_WORD, ft_strdup("'")));
 	start = ++self->cursor;
 	length = 0;
 	peek = lexer_peek(self, length);

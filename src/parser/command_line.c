@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:45:09 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 17:52:54 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:44:27 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,21 @@
  */
 t_node	*parser_command_line(t_parser *self)
 {
-	return (parser_simple_command(self));
+	t_node	*command;
+
+	command = parser_simple_command(self);
+	if (!command)
+		return (NULL);
+	if (parser_match(self, T_VERTICAL_BAR))
+	{
+		command->pipe = parser_command_line(self);
+		if (!command->pipe)
+		{
+			node_destroy(command);
+			return (NULL);
+		}
+	}
+	return (command);
 }
 
 /**
@@ -98,7 +112,7 @@ t_node	*parser_simple_word(t_parser *self)
 	t_node	*result;
 
 	is_env = (parser_match(self, T_DOLLAR_SIGN) != NULL);
-	word = parser_consume(self, T_EOF | T_WORD | T_WHITESPACE);
+	word = parser_match(self, T_EOF | T_WORD | T_WHITESPACE);
 	if (!word || word->kind == T_EOF)
 		return (NULL);
 	if (is_env)

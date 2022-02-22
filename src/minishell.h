@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 17:53:03 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:49:20 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,19 @@ int					string_deinit(t_string *self);
 typedef enum e_token_kind
 {
 	T_BEGIN = 1 << 0,
-	T_QUOTE = 1 << 1,
-	T_DOUBLE_QUOTE = 1 << 2,
-	T_WHITESPACE = 1 << 3,
-	T_WORD = 1 << 4,
-	T_DOLLAR_SIGN = 1 << 5,
-	T_LESS = 1 << 6,
-	T_GREAT = 1 << 7,
-	T_DOUBLE_LESS = 1 << 8,
-	T_DOUBLE_GREAT = 1 << 9,
-	T_VERTICAL_BAR = 1 << 10,
-	T_SEMICOLON = 1 << 11,
-	T_QUESTION_MARK = 1 << 12,
-	T_EQUALS = 1 << 13,
-	T_EOF = 1 << 14
+	T_DOUBLE_QUOTE = 1 << 1,
+	T_WHITESPACE = 1 << 2,
+	T_WORD = 1 << 3,
+	T_DOLLAR_SIGN = 1 << 4,
+	T_LESS = 1 << 5,
+	T_GREAT = 1 << 6,
+	T_DOUBLE_LESS = 1 << 7,
+	T_DOUBLE_GREAT = 1 << 8,
+	T_VERTICAL_BAR = 1 << 9,
+	T_SEMICOLON = 1 << 10,
+	T_QUESTION_MARK = 1 << 11,
+	T_EQUALS = 1 << 12,
+	T_EOF = 1 << 13
 }					t_token_kind;
 
 const char			*token_kind_to_string(t_token_kind kind);
