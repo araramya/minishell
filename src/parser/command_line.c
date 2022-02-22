@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:45:09 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:44:27 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:54:45 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ t_node	*parser_command_line(t_parser *self)
 			return (NULL);
 		}
 	}
+	if (parser_match(self, T_SEMICOLON))
+		command->next = parser_command_line(self);
 	return (command);
 }
 
