@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 19:20:57 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 00:58:39 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,11 @@ t_node				*parser_parse(t_parser *self, t_token *tokens);
 t_token				*parser_advance(t_parser *self);
 t_token				*parser_check(t_parser *self, t_token_kind kind);
 t_token				*parser_match(t_parser *self, t_token_kind kind);
+t_token				*parser_match2(t_parser *self, t_token_kind kind);
 t_token				*parser_consume(t_parser *self, t_token_kind kind);
 t_node				*parser_command_line(t_parser *self);
+t_node				*parser_redirection(t_parser *self);
+t_node				*parser_pipe(t_parser *self);
 t_node				*parser_quoted(t_parser *self);
 t_node				*parser_simple_command(t_parser *self);
 t_node				*parser_word(t_parser *self);
