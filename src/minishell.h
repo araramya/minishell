@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/20 18:33:56 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 17:42:53 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,61 @@ t_token				*lexer_until(t_lexer *self, t_token_kind kind, t_check c);
 int					lexer_is_space(int c);
 int					lexer_is_word(int c);
 
+// NODE
+typedef enum e_node_kind
+{
+	NODE_COMMAND = 1 << 0,
+	NODE_WORD = 1 << 1,
+	NODE_VARIABLE = 1 << 2,
+	NODE_QUOTED = 1 << 3,
+}					t_node_kind;
+
+const char			*node_kind_to_string(t_node_kind kind);
+
+typedef struct s_node
+{
+	t_node_kind		kind;
+	struct s_node	*next;
+	struct s_node	*arguments;
+	struct s_node	*target;
+	struct s_node	*pipe;
+	struct s_node	*in_quote;
+	char			*value;
+}					t_node;
+
+t_node				*node_create(t_node_kind kind);
+t_node				*node_last(t_node *self);
+t_node				*node_push(t_node *self, t_node *src);
+void				node_print(t_node *self, int indent);
+void				node_destroy(t_node *self);
+
+// PASER
+typedef struct s_parser
+{
+	bool			error;
+	t_token			*tokens;
+	t_token			*current;
+	int				index;
+}					t_parser;
+
+t_node				*parser_parse(t_parser *self, t_token *tokens);
+t_token				*parser_advance(t_parser *self);
+t_token				*parser_check(t_parser *self, t_token_kind kind);
+t_token				*parser_match(t_parser *self, t_token_kind kind);
+t_token				*parser_consume(t_parser *self, t_token_kind kind);
+t_node				*parser_command_line(t_parser *self);
+t_node				*parser_quoted(t_parser *self);
+t_node				*parser_simple_command(t_parser *self);
+t_node				*parser_word(t_parser *self);
+t_node				*parser_simple_word(t_parser *self);
+void				parser_ignore_whitespace(t_parser *self);
+
 // SHELL
 typedef struct s_shell
 {
 	int				code;
 	t_lexer			lexer;
+	t_parser		parser;
 }					t_shell;
 
 int					shell_start(t_shell *self);
