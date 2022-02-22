@@ -6,12 +6,18 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:23:12 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 17:43:54 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:23:17 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Converts an enum into string.
+ * 
+ * @param kind 
+ * @return const char* 
+ */
 const char	*node_kind_to_string(t_node_kind kind)
 {
 	if ((kind & NODE_COMMAND) != 0)
@@ -25,6 +31,11 @@ const char	*node_kind_to_string(t_node_kind kind)
 	return ("NODE_UNKNOWN");
 }
 
+/**
+ * @brief Prints a whitespace indent * 2 times
+ * 
+ * @param indent 
+ */
 static void	node_print_indent(int indent)
 {
 	indent *= 2;
@@ -32,6 +43,12 @@ static void	node_print_indent(int indent)
 		write(1, " ", 1);
 }
 
+/**
+ * @brief Prints the node for debugging purposes.
+ * 
+ * @param self 
+ * @param indent 
+ */
 void	node_print(t_node *self, int indent)
 {
 	if (!self)

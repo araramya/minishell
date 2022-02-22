@@ -6,17 +6,33 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:45:09 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 17:41:28 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 17:52:54 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Parse a command line
+ * 
+ * command_line -> simple_command
+ * 
+ * @param self 
+ * @return t_node* 
+ */
 t_node	*parser_command_line(t_parser *self)
 {
 	return (parser_simple_command(self));
 }
 
+/**
+ * @brief Parse a simple command
+ * 
+ * simple_command -> word+
+ * 
+ * @param self 
+ * @return t_node* 
+ */
 t_node	*parser_simple_command(t_parser *self)
 {
 	t_node	*arguments;
@@ -24,12 +40,14 @@ t_node	*parser_simple_command(t_parser *self)
 	t_node	*temp;
 
 	arguments = NULL;
-	parser_ignore_whitespace(self);
+	while (parser_check(self, T_WHITESPACE))
+		parser_advance(self);
 	temp = parser_word(self);
 	while (temp)
 	{
 		arguments = node_push(arguments, temp);
-		parser_ignore_whitespace(self);
+		while (parser_check(self, T_WHITESPACE))
+			parser_advance(self);
 		temp = parser_word(self);
 	}
 	if (arguments == NULL)
@@ -39,6 +57,14 @@ t_node	*parser_simple_command(t_parser *self)
 	return (result);
 }
 
+/**
+ * @brief Parse a quoted string
+ * 
+ * quoted -> T_DOUBLE_QUOTE simple_word+ T_DOUBLE_QUOTE
+ * 
+ * @param self 
+ * @return t_node* 
+ */
 t_node	*parser_quoted(t_parser *self)
 {
 	t_node	*in_quote;
@@ -57,6 +83,14 @@ t_node	*parser_quoted(t_parser *self)
 	return (result);
 }
 
+/**
+ * @brief Parse a simple word
+ * 
+ * simple_word -> T_DOLLAR_SIGN? T_WORD | T_WHITESPACE
+ * 
+ * @param self 
+ * @return t_node* 
+ */
 t_node	*parser_simple_word(t_parser *self)
 {
 	bool	is_env;
@@ -75,15 +109,17 @@ t_node	*parser_simple_word(t_parser *self)
 	return (result);
 }
 
+/**
+ * @brief Parse a word
+ * 
+ * word -> simple_word | quoted
+ * 
+ * @param self 
+ * @return t_node* 
+ */
 t_node	*parser_word(t_parser *self)
 {
 	if (parser_match(self, T_DOUBLE_QUOTE))
 		return (parser_quoted(self));
 	return (parser_simple_word(self));
-}
-
-void	parser_ignore_whitespace(t_parser *self)
-{
-	while (parser_check(self, T_WHITESPACE))
-		parser_advance(self);
 }

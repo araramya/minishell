@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 17:42:53 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 17:53:03 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ t_node				*parser_quoted(t_parser *self);
 t_node				*parser_simple_command(t_parser *self);
 t_node				*parser_word(t_parser *self);
 t_node				*parser_simple_word(t_parser *self);
-void				parser_ignore_whitespace(t_parser *self);
 
 // SHELL
 typedef struct s_shell

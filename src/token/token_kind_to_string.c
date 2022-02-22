@@ -6,12 +6,18 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:57:15 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/21 20:39:48 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:20:48 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief The other half of the function to pass norminette checks.
+ * 
+ * @param kind 
+ * @return const char* 
+ */
 static const char	*token_kind_to_string_symbols(t_token_kind kind)
 {
 	if ((kind & T_DOLLAR_SIGN) != 0)
@@ -33,6 +39,12 @@ static const char	*token_kind_to_string_symbols(t_token_kind kind)
 	return ("T_UNKNOWN");
 }
 
+/**
+ * @brief Converts an enum into string.
+ * 
+ * @param kind 
+ * @return const char* 
+ */
 const char	*token_kind_to_string(t_token_kind kind)
 {
 	if ((kind & T_BEGIN) != 0)

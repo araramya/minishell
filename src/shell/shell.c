@@ -6,12 +6,18 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 17:44:33 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:19:29 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Executes a command line.
+ * 
+ * @param self 
+ * @param input 
+ */
 static void	shell_execute(t_shell *self, char *input)
 {
 	t_token	*tokens;
@@ -35,6 +41,12 @@ static void	shell_execute(t_shell *self, char *input)
 	token_destroy(tokens);
 }
 
+/**
+ * @brief Main shell loop.
+ * 
+ * @param self 
+ * @return int 
+ */
 int	shell_start(t_shell *self)
 {
 	char	*input;

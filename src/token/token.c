@@ -6,12 +6,19 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 20:29:51 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/19 20:33:48 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:23:06 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Create a token with kind and value.
+ * 
+ * @param kind 
+ * @param slice 
+ * @return t_token* 
+ */
 t_token	*token_create(t_token_kind kind, char *slice)
 {
 	t_token	*self;
@@ -24,6 +31,11 @@ t_token	*token_create(t_token_kind kind, char *slice)
 	return (self);
 }
 
+/**
+ * @brief Recursively destroy tokens with it's values.
+ * 
+ * @param self 
+ */
 void	token_destroy(t_token *self)
 {
 	if (self == NULL)
@@ -35,6 +47,12 @@ void	token_destroy(t_token *self)
 	free(self);
 }
 
+/**
+ * @brief Returns the last element of the token.
+ * 
+ * @param self 
+ * @return t_token* 
+ */
 t_token	*token_last(t_token *self)
 {
 	while (self != NULL && self->next != NULL)
@@ -42,6 +60,13 @@ t_token	*token_last(t_token *self)
 	return (self);
 }
 
+/**
+ * @brief Pushes the token to the destination.
+ * 
+ * @param self 
+ * @param src 
+ * @return t_token* 
+ */
 t_token	*token_push(t_token *self, t_token *src)
 {
 	t_token	*last;
@@ -53,6 +78,12 @@ t_token	*token_push(t_token *self, t_token *src)
 	return (last->next);
 }
 
+/**
+ * @brief Prints the token for debugging purposes.
+ * 
+ * @param self 
+ * @param indent 
+ */
 void	token_print(t_token *self)
 {
 	if (self != NULL)

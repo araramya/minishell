@@ -6,12 +6,18 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:26:19 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/20 18:36:57 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:25:05 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Lex single quotes.
+ * 
+ * @param self 
+ * @return t_token* 
+ */
 t_token	*lexer_single_quote(t_lexer *self)
 {
 	int		start;
@@ -37,6 +43,13 @@ t_token	*lexer_single_quote(t_lexer *self)
 	return (token_create(T_WORD, result));
 }
 
+/**
+ * @brief Lex single charecters.
+ * 
+ * @param self 
+ * @param peek 
+ * @return t_token* 
+ */
 static t_token	*lexer_single(t_lexer *self, char peek)
 {
 	if (peek == '$')
@@ -64,6 +77,12 @@ static t_token	*lexer_single(t_lexer *self, char peek)
 	return (NULL);
 }
 
+/**
+ * @brief Lexes one token from input.
+ * 
+ * @param self 
+ * @return t_token* 
+ */
 t_token	*lexer_next(t_lexer *self)
 {
 	char	peek;
@@ -87,6 +106,13 @@ t_token	*lexer_next(t_lexer *self)
 	return (lexer_until(self, T_WORD, lexer_is_word));
 }
 
+/**
+ * @brief Lexes input string into tokens.
+ * 
+ * @param self 
+ * @param input 
+ * @return t_token* 
+ */
 t_token	*lexer_lex(t_lexer *self, const char *input)
 {
 	t_token	*next;

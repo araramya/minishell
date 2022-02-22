@@ -6,12 +6,17 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:41:46 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/19 19:47:40 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:30:35 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Initialises string struct.
+ * 
+ * @param self 
+ */
 void	string_init(t_string *self)
 {
 	self->buffer = NULL;
@@ -19,6 +24,13 @@ void	string_init(t_string *self)
 	self->size = 0;
 }
 
+/**
+ * @brief Pushes a string into the struct.
+ * 
+ * @param self 
+ * @param src 
+ * @return int 
+ */
 int	string_push(t_string *self, const char *src)
 {
 	size_t	size;
@@ -39,6 +51,12 @@ int	string_push(t_string *self, const char *src)
 	return (0);
 }
 
+/**
+ * @brief Deinitialises the string struct and frees the buffer.
+ * 
+ * @param self 
+ * @return int 
+ */
 int	string_deinit(t_string *self)
 {
 	if (!self)
