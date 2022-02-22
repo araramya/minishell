@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:26:19 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:48:28 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:57:34 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ static t_token	*lexer_single(t_lexer *self, char peek)
 {
 	if (peek == '$')
 		return (token_create(T_DOLLAR_SIGN, ft_strdup("$")));
-	if (peek == '?')
-		return (token_create(T_QUESTION_MARK, ft_strdup("?")));
 	if (peek == '|')
 		return (token_create(T_VERTICAL_BAR, ft_strdup("|")));
 	if (peek == ';')

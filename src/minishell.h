@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:49:20 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 18:57:29 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,8 @@ typedef enum e_token_kind
 	T_DOUBLE_GREAT = 1 << 8,
 	T_VERTICAL_BAR = 1 << 9,
 	T_SEMICOLON = 1 << 10,
-	T_QUESTION_MARK = 1 << 11,
-	T_EQUALS = 1 << 12,
-	T_EOF = 1 << 13
+	T_EQUALS = 1 << 11,
+	T_EOF = 1 << 12
 }					t_token_kind;
 
 const char			*token_kind_to_string(t_token_kind kind);
