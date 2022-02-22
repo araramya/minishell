@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:57:29 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 19:20:57 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,22 @@ typedef enum e_node_kind
 
 const char			*node_kind_to_string(t_node_kind kind);
 
+typedef enum e_redirect_kind
+{
+	R_NONE,
+	R_LEFT,
+	R_RIGHT,
+	R_DOUBLE_LEFT,
+	R_DOUBLE_RIGHT
+}					t_redirect_kind;
+
+t_redirect_kind		token_kind_to_redirect_kind(t_token_kind kind);
+const char			*redirect_kind_to_string(t_redirect_kind kind);
+
 typedef struct s_node
 {
 	t_node_kind		kind;
+	t_redirect_kind	redirect_kind;
 	struct s_node	*next;
 	struct s_node	*arguments;
 	struct s_node	*target;

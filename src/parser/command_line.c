@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:45:09 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:54:45 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 19:28:12 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,19 @@
 t_node	*parser_command_line(t_parser *self)
 {
 	t_node	*command;
+	t_token	*t;
 
 	command = parser_simple_command(self);
 	if (!command)
 		return (NULL);
+	t = parser_match(self, T_LESS | T_GREAT | T_DOUBLE_LESS | T_DOUBLE_GREAT);
+	if (t)
+	{
+		while (parser_check(self, T_WHITESPACE))
+			parser_advance(self);
+		command->redirect_kind = token_kind_to_redirect_kind(t->kind);
+		command->target = parser_word(self);
+	}
 	if (parser_match(self, T_VERTICAL_BAR))
 	{
 		command->pipe = parser_command_line(self);

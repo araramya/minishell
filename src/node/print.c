@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:23:12 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:45:17 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/22 19:25:11 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,15 @@ void	node_print(t_node *self, int indent)
 		node_print_indent(indent);
 		printf("pipe:\n");
 		node_print(self->pipe, indent + 1);
+	}
+	if (self->target)
+	{
+		node_print_indent(indent);
+		printf("redirect_kind: %s\n",
+				redirect_kind_to_string(self->redirect_kind));
+		node_print_indent(indent);
+		printf("redirect_target:\n");
+		node_print(self->target, indent + 1);
 	}
 	if (self->next)
 		node_print(self->next, indent - 1);
