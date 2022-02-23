@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:23:12 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 19:25:11 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 14:57:17 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,16 @@ static void	node_print_indent(int indent)
 		write(1, " ", 1);
 }
 
+static void	node_print_children(t_node *node, const char *name, int indent)
+{
+	if (node)
+	{
+		node_print_indent(indent);
+		printf("%s:\n", name);
+		node_print(node, indent + 1);
+	}
+}
+
 /**
  * @brief Prints the node for debugging purposes.
  * 
@@ -60,32 +70,16 @@ void	node_print(t_node *self, int indent)
 		node_print_indent(indent);
 		printf("value: '%s'\n", self->value);
 	}
-	if (self->arguments)
-	{
-		node_print_indent(indent);
-		printf("arguments:\n");
-		node_print(self->arguments, indent + 1);
-	}
-	if (self->in_quote)
-	{
-		node_print_indent(indent);
-		printf("in_quote:\n");
-		node_print(self->in_quote, indent + 1);
-	}
-	if (self->pipe)
-	{
-		node_print_indent(indent);
-		printf("pipe:\n");
-		node_print(self->pipe, indent + 1);
-	}
+	node_print_children(self->arguments, "arguments", indent);
+	node_print_children(self->in_quote, "in_quote", indent);
+	node_print_children(self->pipe, "pipe", indent);
 	if (self->target)
 	{
 		node_print_indent(indent);
-		printf("redirect_kind: %s\n",
-				redirect_kind_to_string(self->redirect_kind));
-		node_print_indent(indent);
-		printf("redirect_target:\n");
-		node_print(self->target, indent + 1);
+		printf("redirect:\n");
+		node_print_indent(indent + 1);
+		printf("kind: %s\n", redirect_kind_to_string(self->redirect_kind));
+		node_print_children(self->target, "target", indent + 1);
 	}
 	if (self->next)
 		node_print(self->next, indent - 1);
