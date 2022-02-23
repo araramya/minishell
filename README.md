@@ -2,7 +2,7 @@
 
 ## Todo
 
-- [ ] Not interpret unclosed quotes or unspecified special characters like \ or ;.
+- [x] Not interpret unclosed quotes or unspecified special characters like \ or ;.
 - [x] Not use more than one global variable, think about it and be ready to explain why you do it.
 - [x] Show a prompt when waiting for a new command.
 - [x] Have a working History.
@@ -15,8 +15,8 @@
   - [ ] unset with no options
   - [ ] env with no options or arguments
   - [ ] exit with no options
-- [ ] ’ inhibit all interpretation of a sequence of characters.
-- [ ] " inhibit all interpretation of a sequence of characters except for $.
+- [x] ’ inhibit all interpretation of a sequence of characters.
+- [x] " inhibit all interpretation of a sequence of characters except for $.
 - [ ] Redirections
   - [ ] < should redirect input.
   - [ ] > should redirect output.
