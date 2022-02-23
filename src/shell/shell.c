@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:19:29 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 18:11:47 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ static void	shell_execute(t_shell *self, char *input)
 	t_node	*node;
 
 	tokens = lexer_lex(&self->lexer, input);
-	if (tokens)
+	if (tokens && !self->lexer.error)
 	{
 		printf("\nTokens:\n");
 		token_print(tokens);
 		node = parser_parse(&self->parser, tokens);
-		if (node)
+		if (node && !self->parser.error)
 		{
 			printf("\nNodes:\n");
 			node_print(node, 0);
