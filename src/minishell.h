@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 18:13:29 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/24 01:03:07 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ t_token				*lexer_lex(t_lexer *self, const char *input);
 t_token				*lexer_next(t_lexer *self);
 char				lexer_peek(t_lexer *self, int index);
 t_token				*lexer_single_quote(t_lexer *self);
+t_token				*lexer_symbols(t_lexer *self, char peek);
 t_token				*lexer_until(t_lexer *self, t_token_kind kind, t_check c);
 int					lexer_is_space(int c);
 int					lexer_is_word(int c);
@@ -122,8 +123,8 @@ const char			*node_kind_to_string(t_node_kind kind);
 
 typedef enum e_binary_kind
 {
-	BINARY_NONE = 0,
-	BINARY_EQUALS = 1 << 0
+	BINARY_NONE = 1 << 0,
+	BINARY_EQUALS = 1 << 1
 }					t_binary_kind;
 
 t_binary_kind		token_kind_to_binary_kind(t_token_kind kind);
@@ -131,11 +132,11 @@ const char			*binary_kind_to_string(t_binary_kind kind);
 
 typedef enum e_redirect_kind
 {
-	R_NONE = 0,
-	R_LEFT = 1 << 0,
-	R_RIGHT = 1 << 1,
-	R_DOUBLE_LEFT = 1 << 2,
-	R_DOUBLE_RIGHT = 1 << 3
+	R_NONE = 1 << 0,
+	R_LEFT = 1 << 1,
+	R_RIGHT = 1 << 2,
+	R_DOUBLE_LEFT = 1 << 3,
+	R_DOUBLE_RIGHT = 1 << 4
 }					t_redirect_kind;
 
 t_redirect_kind		token_kind_to_redirect_kind(t_token_kind kind);
@@ -162,6 +163,9 @@ t_node				*node_push(t_node *self, t_node *src);
 void				node_print(t_node *self, int indent);
 void				node_destroy(t_node *self);
 
+void				node_print_indent(int indent);
+void				node_print_children(t_node *node, char *name, int indent);
+void				node_print_value(char *name, char *value, int indent);
 // PASER
 typedef struct s_parser
 {

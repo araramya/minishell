@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:26:19 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 18:07:42 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/24 00:59:47 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,47 +44,6 @@ t_token	*lexer_single_quote(t_lexer *self)
 }
 
 /**
- * @brief Lex single charecters.
- * 
- * @param self 
- * @param peek 
- * @return t_token* 
- */
-static t_token	*lexer_single(t_lexer *self, char peek)
-{
-	char	buffer[2];
-
-	if (peek == '$')
-		return (token_create(T_DOLLAR_SIGN, ft_strdup("$")));
-	if (peek == '|')
-		return (token_create(T_VERTICAL_BAR, ft_strdup("|")));
-	if (peek == ';')
-		return (token_create(T_SEMICOLON, ft_strdup(";")));
-	if (peek == '=')
-		return (token_create(T_EQUALS, ft_strdup("=")));
-	if (peek == '\\')
-	{
-		self->cursor++;
-		buffer[0] = lexer_peek(self, 0);
-		buffer[1] = '\0';
-		return (token_create(T_WORD, ft_strdup(buffer)));
-	}
-	if (peek == '>')
-	{
-		if (lexer_peek(self, 1) == '>')
-			return (token_create(T_DOUBLE_GREAT, ft_strdup(">>")));
-		return (token_create(T_GREAT, ft_strdup(">")));
-	}
-	if (peek == '<')
-	{
-		if (lexer_peek(self, 1) == '<')
-			return (token_create(T_DOUBLE_LESS, ft_strdup("<<")));
-		return (token_create(T_LESS, ft_strdup("<")));
-	}
-	return (NULL);
-}
-
-/**
  * @brief Lexes one token from input.
  * 
  * @param self 
@@ -98,7 +57,7 @@ t_token	*lexer_next(t_lexer *self)
 	peek = lexer_peek(self, 0);
 	if (peek == '\0')
 		return (NULL);
-	temp = lexer_single(self, peek);
+	temp = lexer_symbols(self, peek);
 	if (temp)
 		return (temp);
 	if (peek == '"')

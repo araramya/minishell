@@ -10,7 +10,7 @@ do
     actual_path="$path/actual.txt";
     command=$(cat $command_path);
     ./minishell -c "$command" > $actual_path;
-    if cmp $actual_path $expected_path; then
+    if cmp -s $actual_path $expected_path; then
         printf "\033[0;32m";
     else
         printf "\033[0;31m";
