@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 00:58:39 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 11:55:14 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_lexer
 	t_token			*tokens;
 	const char		*input;
 	bool			in_quotes;
+	bool			dollar_sign;
 	bool			error;
 	size_t			cursor;
 	size_t			length;
@@ -105,6 +106,7 @@ t_token				*lexer_single_quote(t_lexer *self);
 t_token				*lexer_until(t_lexer *self, t_token_kind kind, t_check c);
 int					lexer_is_space(int c);
 int					lexer_is_word(int c);
+int					lexer_is_alnum(int c);
 
 // NODE
 typedef enum e_node_kind

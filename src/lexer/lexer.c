@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:26:19 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:57:34 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 12:00:13 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ t_token	*lexer_next(t_lexer *self)
 		return (lexer_single_quote(self));
 	if (lexer_is_space(peek))
 		return (lexer_until(self, T_WHITESPACE, lexer_is_space));
+	if (self->dollar_sign == true)
+		return (lexer_until(self, T_WORD, lexer_is_alnum));
 	return (lexer_until(self, T_WORD, lexer_is_word));
 }
 
@@ -126,6 +128,7 @@ t_token	*lexer_lex(t_lexer *self, const char *input)
 	next = lexer_next(self);
 	while (next && self->error == false)
 	{
+		self->dollar_sign = (next->kind == T_DOLLAR_SIGN);
 		self->cursor += ft_strlen(next->slice);
 		token_push(self->tokens, next);
 		next = lexer_next(self);
