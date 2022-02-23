@@ -8,3 +8,4 @@ minishell.exe
 *.so
 *.out
 *.log
+actual.txt

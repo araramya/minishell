@@ -1,0 +1,29 @@
+
+Tokens:
+T_BEGIN: '(null)'
+T_WORD: 'echo'
+T_WHITESPACE: ' '
+T_DOUBLE_QUOTE: '"'
+T_WORD: 'Hello'
+T_WHITESPACE: ' '
+T_DOLLAR_SIGN: '$'
+T_WORD: 'USER'
+T_DOUBLE_QUOTE: '"'
+T_EOF: '(null)'
+
+Nodes:
+@NODE_COMMAND
+  arguments:
+    @NODE_WORD
+      value: 'echo'
+    next:
+      @NODE_QUOTED
+        in_quote:
+          @NODE_WORD
+            value: 'Hello'
+          next:
+            @NODE_WORD
+              value: ' '
+            next:
+              @NODE_VARIABLE
+                value: 'USER'

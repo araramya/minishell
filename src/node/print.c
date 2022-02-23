@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:23:12 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 21:52:32 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 22:21:40 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	node_print_indent(int indent)
 {
 	indent *= 2;
 	while (indent-- > 0)
-		write(1, " ", 1);
+		printf(" ");
 }
 
 /**
