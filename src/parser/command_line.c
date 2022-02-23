@@ -6,11 +6,31 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:45:09 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 00:57:44 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 19:11:29 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * @brief Parse a command pipe
+ * 
+ * pipe -> redirection | command_line
+ * 
+ * @param self 
+ * @return t_node* 
+ */
+t_node	*parser_pipe(t_parser *self)
+{
+	t_node	*command;
+
+	command = parser_redirection(self);
+	if (!command)
+		return (NULL);
+	if (parser_match(self, T_VERTICAL_BAR))
+		command->pipe = parser_command_line(self);
+	return (command);
+}
 
 /**
  * @brief Parse a command line
@@ -30,18 +50,14 @@ t_node	*parser_command_line(t_parser *self)
 	return (command);
 }
 
-t_node	*parser_pipe(t_parser *self)
-{
-	t_node	*command;
-
-	command = parser_redirection(self);
-	if (!command)
-		return (NULL);
-	if (parser_match(self, T_VERTICAL_BAR))
-		command->pipe = parser_command_line(self);
-	return (command);
-}
-
+/**
+ * @brief Parse a redirection
+ * 
+ * redirection -> simple_command [< | > | << | >>] word command_line?
+ * 
+ * @param self 
+ * @return t_node* 
+ */
 t_node	*parser_redirection(t_parser *self)
 {
 	t_node	*command;

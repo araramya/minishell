@@ -6,12 +6,18 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 19:12:53 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 19:24:13 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 21:52:56 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Converts token kind to redirect kind.
+ * 
+ * @param kind 
+ * @return t_redirect_kind 
+ */
 t_redirect_kind	token_kind_to_redirect_kind(t_token_kind kind)
 {
 	if ((kind & T_LESS) != 0)
@@ -25,6 +31,12 @@ t_redirect_kind	token_kind_to_redirect_kind(t_token_kind kind)
 	return (R_NONE);
 }
 
+/**
+ * @brief Converts redirect kind to string.
+ * 
+ * @param kind 
+ * @return const char* 
+ */
 const char	*redirect_kind_to_string(t_redirect_kind kind)
 {
 	if ((kind & R_LEFT) != 0)

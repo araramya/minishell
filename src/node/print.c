@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:23:12 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 17:32:24 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 21:52:32 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,13 @@ static void	node_print_indent(int indent)
 		write(1, " ", 1);
 }
 
+/**
+ * @brief Prints specidied children if exists
+ * 
+ * @param node 
+ * @param name 
+ * @param indent 
+ */
 static void	node_print_children(t_node *node, const char *name, int indent)
 {
 	if (node)
@@ -55,6 +62,13 @@ static void	node_print_children(t_node *node, const char *name, int indent)
 	}
 }
 
+/**
+ * @brief Prints a value if exists
+ * 
+ * @param name 
+ * @param value 
+ * @param indent 
+ */
 static void	node_print_value(const char *name, const char *value, int indent)
 {
 	if (name && value)

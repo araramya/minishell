@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 00:32:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 17:36:09 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 20:53:16 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,14 @@ t_node	*parser_simple_word(t_parser *self)
 	return (result);
 }
 
+/**
+ * @brief Parse a binary
+ * 
+ * binary -> simple_word = simple_word
+ * 
+ * @param self 
+ * @return t_node* 
+ */
 t_node	*parser_binary(t_parser *self)
 {
 	t_node	*word;
