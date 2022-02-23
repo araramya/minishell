@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 17:46:56 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 18:13:29 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ typedef struct s_shell
 	t_parser		parser;
 }					t_shell;
 
+int					shell_execute(t_shell *self, char *input);
 int					shell_start(t_shell *self);
 
 #endif // MINISHELL_H
