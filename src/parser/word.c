@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 00:32:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 12:05:42 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 17:36:09 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_node	*parser_simple_word(t_parser *self)
 	t_node	*result;
 
 	is_env = (parser_match(self, T_DOLLAR_SIGN) != NULL);
-	word = parser_match(self, T_EOF | T_WORD | T_WHITESPACE);
+	word = parser_match(self, T_EOF | T_WORD | T_WHITESPACE | T_EQUALS);
 	if (!word || word->kind == T_EOF)
 		return (NULL);
 	if (is_env)
@@ -78,6 +78,25 @@ t_node	*parser_simple_word(t_parser *self)
 	if (parser_check(self, T_WORD | T_DOLLAR_SIGN))
 		result->next = parser_simple_word(self);
 	return (result);
+}
+
+t_node	*parser_binary(t_parser *self)
+{
+	t_node	*word;
+	t_node	*result;
+	t_token	*check;
+
+	word = parser_simple_word(self);
+	check = parser_match(self, T_EQUALS);
+	if (check && !parser_check(self, T_WHITESPACE))
+	{
+		result = node_create(NODE_BINARY);
+		result->lhs = word;
+		result->rhs = parser_simple_word(self);
+		result->binary_kind = token_kind_to_binary_kind(check->kind);
+		return (result);
+	}
+	return (word);
 }
 
 /**
@@ -92,5 +111,5 @@ t_node	*parser_word(t_parser *self)
 {
 	if (parser_match2(self, T_DOUBLE_QUOTE))
 		return (parser_quoted(self));
-	return (parser_simple_word(self));
+	return (parser_binary(self));
 }

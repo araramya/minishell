@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 11:55:14 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 17:46:56 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,17 +115,27 @@ typedef enum e_node_kind
 	NODE_WORD = 1 << 1,
 	NODE_VARIABLE = 1 << 2,
 	NODE_QUOTED = 1 << 3,
+	NODE_BINARY = 1 << 4,
 }					t_node_kind;
 
 const char			*node_kind_to_string(t_node_kind kind);
 
+typedef enum e_binary_kind
+{
+	BINARY_NONE = 0,
+	BINARY_EQUALS = 1 << 0
+}					t_binary_kind;
+
+t_binary_kind		token_kind_to_binary_kind(t_token_kind kind);
+const char			*binary_kind_to_string(t_binary_kind kind);
+
 typedef enum e_redirect_kind
 {
-	R_NONE,
-	R_LEFT,
-	R_RIGHT,
-	R_DOUBLE_LEFT,
-	R_DOUBLE_RIGHT
+	R_NONE = 0,
+	R_LEFT = 1 << 0,
+	R_RIGHT = 1 << 1,
+	R_DOUBLE_LEFT = 1 << 2,
+	R_DOUBLE_RIGHT = 1 << 3
 }					t_redirect_kind;
 
 t_redirect_kind		token_kind_to_redirect_kind(t_token_kind kind);
@@ -135,6 +145,9 @@ typedef struct s_node
 {
 	t_node_kind		kind;
 	t_redirect_kind	redirect_kind;
+	t_binary_kind	binary_kind;
+	struct s_node	*lhs;
+	struct s_node	*rhs;
 	struct s_node	*next;
 	struct s_node	*arguments;
 	struct s_node	*target;
@@ -170,6 +183,7 @@ t_node				*parser_pipe(t_parser *self);
 t_node				*parser_quoted(t_parser *self);
 t_node				*parser_simple_command(t_parser *self);
 t_node				*parser_word(t_parser *self);
+t_node				*parser_binary(t_parser *self);
 t_node				*parser_simple_word(t_parser *self);
 
 // SHELL

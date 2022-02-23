@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:23:12 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 14:57:17 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 17:32:24 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ const char	*node_kind_to_string(t_node_kind kind)
 		return ("NODE_VARIABLE");
 	if ((kind & NODE_QUOTED) != 0)
 		return ("NODE_QUOTED");
+	if ((kind & NODE_BINARY) != 0)
+		return ("NODE_BINARY");
 	return ("NODE_UNKNOWN");
 }
 
@@ -53,6 +55,15 @@ static void	node_print_children(t_node *node, const char *name, int indent)
 	}
 }
 
+static void	node_print_value(const char *name, const char *value, int indent)
+{
+	if (name && value)
+	{
+		node_print_indent(indent);
+		printf("%s: '%s'\n", name, value);
+	}
+}
+
 /**
  * @brief Prints the node for debugging purposes.
  * 
@@ -65,14 +76,19 @@ void	node_print(t_node *self, int indent)
 		return ;
 	node_print_indent(indent++);
 	printf("@%s\n", node_kind_to_string(self->kind));
-	if (self->value)
-	{
-		node_print_indent(indent);
-		printf("value: '%s'\n", self->value);
-	}
+	node_print_value("value", self->value, indent);
 	node_print_children(self->arguments, "arguments", indent);
 	node_print_children(self->in_quote, "in_quote", indent);
 	node_print_children(self->pipe, "pipe", indent);
+	if (self->binary_kind != BINARY_NONE)
+	{
+		node_print_indent(indent);
+		printf("binary:\n");
+		node_print_indent(indent + 1);
+		printf("kind: %s\n", binary_kind_to_string(self->binary_kind));
+		node_print_children(self->lhs, "lhs", indent + 1);
+		node_print_children(self->rhs, "rhs", indent + 1);
+	}
 	if (self->target)
 	{
 		node_print_indent(indent);
@@ -81,6 +97,5 @@ void	node_print(t_node *self, int indent)
 		printf("kind: %s\n", redirect_kind_to_string(self->redirect_kind));
 		node_print_children(self->target, "target", indent + 1);
 	}
-	if (self->next)
-		node_print(self->next, indent - 1);
+	node_print_children(self->next, "next", indent - 1);
 }

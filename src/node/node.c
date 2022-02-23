@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 20:34:11 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 19:29:19 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/23 17:52:57 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ t_node	*node_create(t_node_kind kind)
 	if (!node)
 		return (NULL);
 	node->kind = kind;
+	node->lhs = NULL;
+	node->rhs = NULL;
+	node->next = NULL;
+	node->arguments = NULL;
+	node->target = NULL;
+	node->pipe = NULL;
+	node->in_quote = NULL;
+	node->value = NULL;
 	return (node);
 }
 
