@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/24 01:03:07 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/24 19:15:58 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,20 @@ t_node				*parser_simple_command(t_parser *self);
 t_node				*parser_word(t_parser *self);
 t_node				*parser_binary(t_parser *self);
 t_node				*parser_simple_word(t_parser *self);
+
+// ENV
+typedef struct s_env
+{
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
+
+t_env				*env_create(char *name, char *value);
+t_env				*env_last(t_env *self);
+t_env				*env_push(t_env *self, t_env *src);
+t_env				*env_set(t_env *self, char *name, char *value);
+t_env				*env_find(t_env *self, char *name);
 
 // SHELL
 typedef struct s_shell
