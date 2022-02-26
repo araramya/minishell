@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan < aabajyan@student.42yerevan.a    +#+  +:+       +#+        */
+/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/26 17:26:25 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/26 21:38:55 by araramya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ static int	shell_builtin(t_shell *self, t_node *node)
 		return (builtin_export(self, name->next));
 	if (ft_strcmp(name->value, "unset") == 0)
 		return (builtin_unset(self, name->next));
+	if (ft_strcmp(name->value, "pwd") == 0)
+		return(buildin_pwd(self, name->next));
+	if (ft_strcmp(name->value, "cd") == 0)
+		return (buildin_cd(self, name->next));
+	if (ft_strcmp(name->value, "exit") == 0)
+		return (buildin_exit(self, name->next));
 	return (0);
 }
 

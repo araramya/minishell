@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan < aabajyan@student.42yerevan.a    +#+  +:+       +#+        */
+/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/26 17:13:11 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/26 21:51:06 by araramya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
+# include <limits.h>
 
 // LIBFT
 void				*ft_memcpy(void *dest, const void *src, size_t num);
@@ -36,6 +37,7 @@ void				*ft_calloc(size_t el_num, size_t el_size);
 void				*ft_memset(void *buffer, int c, size_t size);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strchr(const char *str, int c);
+long				ft_atoi(const char *str);
 
 // STRING
 typedef struct s_string
@@ -219,5 +221,8 @@ int					shell_start(t_shell *self);
 // BUILTIN
 int					builtin_unset(t_shell *self, t_node *node);
 int					builtin_export(t_shell *self, t_node *node);
+int					buildin_pwd(t_shell *self, t_node *node);
+int					buildin_cd(t_shell *self, t_node *node);
+int					buildin_exit(t_shell *self, t_node *node);
 
 #endif // MINISHELL_H
