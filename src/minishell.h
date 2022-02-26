@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/26 21:51:06 by araramya         ###   ########.fr       */
+/*   Updated: 2022/02/27 01:13:39 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -24,7 +25,6 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-# include <limits.h>
 
 // LIBFT
 void				*ft_memcpy(void *dest, const void *src, size_t num);
@@ -205,6 +205,9 @@ t_env				*env_last(t_env *self);
 t_env				*env_push(t_env *self, t_env *src);
 t_env				*env_set(t_env *self, char *name, char *value);
 t_env				*env_find(t_env *self, char *name);
+t_env				*env_unset(t_env *self, char *name);
+void				env_destroy(t_env *self, bool recursive);
+char				*env_get(t_env *self, char *name);
 
 // SHELL
 typedef struct s_shell
@@ -221,6 +224,7 @@ int					shell_start(t_shell *self);
 // BUILTIN
 int					builtin_unset(t_shell *self, t_node *node);
 int					builtin_export(t_shell *self, t_node *node);
+int					buildin_echo(t_shell *self, t_node *node);
 int					buildin_pwd(t_shell *self, t_node *node);
 int					buildin_cd(t_shell *self, t_node *node);
 int					buildin_exit(t_shell *self, t_node *node);

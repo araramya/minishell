@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/24 19:14:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/24 19:27:45 by aabajyan         ###   ########.fr       */
+/*   Created: 2022/02/26 17:34:13 by aabajyan          #+#    #+#             */
+/*   Updated: 2022/02/26 22:51:39 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_env	*env_create(char *name, char *value)
 		return (NULL);
 	env->name = ft_strdup(name);
 	env->value = ft_strdup(value);
+	env->next = NULL;
 	return (env);
 }
 
@@ -42,17 +43,6 @@ t_env	*env_push(t_env *self, t_env *src)
 	return (last->next);
 }
 
-t_env	*env_find(t_env *self, char *name)
-{
-	while (self)
-	{
-		if (ft_strcmp(name, self->name) == 0)
-			return (self);
-		self = self->next;
-	}
-	return (NULL);
-}
-
 t_env	*env_set(t_env *self, char *name, char *value)
 {
 	t_env	*find;
@@ -66,4 +56,17 @@ t_env	*env_set(t_env *self, char *name, char *value)
 		return (find);
 	}
 	return (env_push(self, env_create(name, value)));
+}
+
+void	env_destroy(t_env *self, bool recursive)
+{
+	if (!self)
+		return ;
+	if (self->next && recursive)
+		env_destroy(self->next, recursive);
+	if (self->name)
+		free(self->name);
+	if (self->value)
+		free(self->value);
+	free(self);
 }

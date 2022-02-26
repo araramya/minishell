@@ -3,10 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:56:56 by araramya          #+#    #+#             */
-/*   Updated: 2022/02/26 17:56:57 by araramya         ###   ########.fr       */
+/*   Updated: 2022/02/27 01:17:42 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+
+int	buildin_echo(t_shell *self, t_node *node)
+{
+	(void)self;
+	(void)node;
+	return (0);
+}
