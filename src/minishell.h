@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aabajyan < aabajyan@student.42yerevan.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/24 19:15:58 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/26 17:13:11 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,9 +210,14 @@ typedef struct s_shell
 	int				code;
 	t_lexer			lexer;
 	t_parser		parser;
+	t_env			*env;
 }					t_shell;
 
 int					shell_execute(t_shell *self, char *input);
 int					shell_start(t_shell *self);
+
+// BUILTIN
+int					builtin_unset(t_shell *self, t_node *node);
+int					builtin_export(t_shell *self, t_node *node);
 
 #endif // MINISHELL_H

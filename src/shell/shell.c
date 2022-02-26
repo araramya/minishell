@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aabajyan < aabajyan@student.42yerevan.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 18:53:55 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/26 17:26:25 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	shell_builtin(t_shell *self, t_node *node)
+{
+	t_node	*name;
+
+	if (node->kind != NODE_COMMAND || !node->arguments)
+		return (1);
+	name = node->arguments;
+	if (ft_strcmp(name->value, "export") == 0)
+		return (builtin_export(self, name->next));
+	if (ft_strcmp(name->value, "unset") == 0)
+		return (builtin_unset(self, name->next));
+	return (0);
+}
 
 /**
  * @brief Executes a command line.
@@ -26,13 +40,10 @@ int	shell_execute(t_shell *self, char *input)
 	tokens = lexer_lex(&self->lexer, input);
 	if (tokens && !self->lexer.error)
 	{
-		printf("\nTokens:\n");
-		token_print(tokens);
 		node = parser_parse(&self->parser, tokens);
 		if (node && !self->parser.error)
 		{
-			printf("\nNodes:\n");
-			node_print(node, 0);
+			shell_builtin(self, node);
 			node_destroy(node);
 		}
 	}
@@ -53,6 +64,7 @@ int	shell_start(t_shell *self)
 	char	*input;
 
 	self->code = 0;
+	self->env = NULL;
 	while (true)
 	{
 		input = readline("minishell $ ");
