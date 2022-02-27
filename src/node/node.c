@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 20:34:11 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 17:52:57 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/27 13:22:00 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,19 @@ void	node_destroy(t_node *self)
 	if (self->value != NULL)
 		free(self->value);
 	free(self);
+}
+
+size_t	node_size(t_node *self)
+{
+	size_t	size;
+
+	if (!self)
+		return (0);
+	size = 1;
+	while (self->next)
+	{
+		size++;
+		self = self->next;
+	}
+	return (size);
 }

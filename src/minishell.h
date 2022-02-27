@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/27 01:13:39 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/27 17:25:10 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ t_node				*node_last(t_node *self);
 t_node				*node_push(t_node *self, t_node *src);
 void				node_print(t_node *self, int indent);
 void				node_destroy(t_node *self);
+size_t				node_size(t_node *self);
 
 void				node_print_indent(int indent);
 void				node_print_children(t_node *node, char *name, int indent);
@@ -221,6 +222,16 @@ typedef struct s_shell
 int					shell_execute(t_shell *self, char *input);
 int					shell_start(t_shell *self);
 
+// INTEPRETER
+char				**interpreter_eval(t_shell *self, t_node *node);
+char				*interpreter_quoted(t_shell *self, t_node *node);
+char				*interpreter_binary(t_shell *self, t_node *node);
+char				*interpreter_node(t_shell *self, t_node *node);
+
+// ARGUMENTS
+void				argument_print(char **arguments);
+void				argument_destroy(char **arguments);
+
 // BUILTIN
 int					builtin_unset(t_shell *self, t_node *node);
 int					builtin_export(t_shell *self, t_node *node);
@@ -229,4 +240,4 @@ int					buildin_pwd(t_shell *self, t_node *node);
 int					buildin_cd(t_shell *self, t_node *node);
 int					buildin_exit(t_shell *self, t_node *node);
 
-#endif // MINISHELL_H
+#endif // MINISHELL_H77
