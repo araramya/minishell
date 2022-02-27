@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/27 01:17:09 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/27 11:57:27 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ int	shell_start(t_shell *self)
 	{
 		input = readline("minishell $ ");
 		if (!input)
+		{
+			printf("\n");
 			break ;
+		}
 		shell_execute(self, input);
 	}
 	return (0);
