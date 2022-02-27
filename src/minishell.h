@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/27 17:35:35 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/27 19:36:57 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ typedef struct s_node
 	struct s_node	*target;
 	struct s_node	*pipe;
 	struct s_node	*in_quote;
+	struct s_node	*merged;
 	char			*value;
 }					t_node;
 
@@ -210,20 +211,21 @@ int					shell_execute(t_shell *self, char *input);
 int					shell_start(t_shell *self);
 
 // INTEPRETER
-char				**interpreter_eval(t_shell *self, t_node *node);
-char				*interpreter_quoted(t_shell *self, t_node *node);
-char				*interpreter_node(t_shell *self, t_node *node);
+char				**expander_eval(t_shell *self, t_node *node);
+char				*expander_quoted(t_shell *self, t_node *node);
+char				*expander_node(t_shell *self, t_node *node);
 
 // ARGUMENTS
 void				argument_print(char **arguments);
 void				argument_destroy(char **arguments);
+int					argument_size(char **arguments);
 
 // BUILTIN
-int					builtin_unset(t_shell *self, t_node *node);
-int					builtin_export(t_shell *self, t_node *node);
-int					buildin_echo(t_shell *self, t_node *node);
-int					buildin_pwd(t_shell *self, t_node *node);
-int					buildin_cd(t_shell *self, t_node *node);
-int					buildin_exit(t_shell *self, t_node *node);
+int					builtin_unset(int argc, char **argv);
+int					builtin_export(int argc, char **argv);
+int					buildin_echo(int argc, char **argv);
+int					buildin_cd(int argc, char **argv);
+int					buildin_exit(int argc, char **argv);
+int					buildin_pwd(void);
 
 #endif // MINISHELL_H77

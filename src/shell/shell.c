@@ -6,31 +6,28 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/27 11:57:27 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/27 19:25:20 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	shell_builtin(t_shell *self, t_node *node)
+static int	shell_builtin(int argc, char **argv)
 {
-	t_node	*name;
-
-	if (node->kind != NODE_COMMAND || !node->arguments)
+	if (argc == 0)
 		return (1);
-	name = node->arguments;
-	if (ft_strcmp(name->value, "export") == 0)
-		return (builtin_export(self, name->next));
-	if (ft_strcmp(name->value, "unset") == 0)
-		return (builtin_unset(self, name->next));
-	if (ft_strcmp(name->value, "pwd") == 0)
-		return (buildin_pwd(self, name->next));
-	if (ft_strcmp(name->value, "cd") == 0)
-		return (buildin_cd(self, name->next));
-	if (ft_strcmp(name->value, "exit") == 0)
-		return (buildin_exit(self, name->next));
-	if (ft_strcmp(name->value, "echo") == 0)
-		return (buildin_echo(self, name->next));
+	if (ft_strcmp(argv[0], "export") == 0)
+		return (builtin_export(argc, argv));
+	if (ft_strcmp(argv[0], "unset") == 0)
+		return (builtin_unset(argc, argv));
+	if (ft_strcmp(argv[0], "pwd") == 0)
+		return (buildin_pwd());
+	if (ft_strcmp(argv[0], "cd") == 0)
+		return (buildin_cd(argc, argv));
+	if (ft_strcmp(argv[0], "exit") == 0)
+		return (buildin_exit(argc, argv));
+	if (ft_strcmp(argv[0], "echo") == 0)
+		return (buildin_echo(argc, argv));
 	return (0);
 }
 
@@ -44,14 +41,19 @@ int	shell_execute(t_shell *self, char *input)
 {
 	t_token	*tokens;
 	t_node	*node;
+	char	**argv;
+	int		argc;
 
 	tokens = lexer_lex(&self->lexer, input);
 	if (tokens && !self->lexer.error)
 	{
 		node = parser_parse(&self->parser, tokens);
-		if (node && !self->parser.error)
+		if (node && (node->kind & NODE_COMMAND) != 0)
 		{
-			shell_builtin(self, node);
+			argv = expander_eval(self, node->arguments);
+			argc = argument_size(argv);
+			shell_builtin(argc, argv);
+			argument_destroy(argv);
 			node_destroy(node);
 		}
 	}

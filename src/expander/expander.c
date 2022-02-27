@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   interpreter.c                                      :+:      :+:    :+:   */
+/*   expander.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	**interpreter_eval(t_shell *self, t_node *node)
+char	**expander_eval(t_shell *self, t_node *node)
 {
 	char	**result;
 	size_t	size;
@@ -25,27 +25,52 @@ char	**interpreter_eval(t_shell *self, t_node *node)
 	index = 0;
 	while (index < size)
 	{
-		result[index++] = interpreter_node(self, node);
+		result[index++] = expander_node(self, node);
 		node = node->next;
 	}
 	result[index] = NULL;
 	return (result);
 }
 
-char	*interpreter_node(t_shell *self, t_node *node)
+static char	*expander_word(t_shell *self, t_node *node)
+{
+	t_string	temp;
+	char		*result;
+	t_node		*merge;
+	char		*temp_value;
+
+	string_init(&temp);
+	string_push(&temp, node->value);
+	merge = node->merged;
+	while (merge)
+	{
+		temp_value = expander_node(self, merge);
+		if (temp_value)
+		{
+			string_push(&temp, temp_value);
+			free(temp_value);
+		}
+		merge = merge->merged;
+	}
+	result = ft_strdup(temp.buffer);
+	string_deinit(&temp);
+	return (result);
+}
+
+char	*expander_node(t_shell *self, t_node *node)
 {
 	if (!node)
 		return (NULL);
 	if ((node->kind & NODE_WORD) != 0)
-		return (ft_strdup(node->value));
+		return (expander_word(self, node));
 	if ((node->kind & NODE_VARIABLE) != 0)
 		return (ft_strdup(getenv(node->value)));
 	if ((node->kind & NODE_QUOTED) != 0)
-		return (interpreter_quoted(self, node->in_quote));
+		return (expander_quoted(self, node->in_quote));
 	return (NULL);
 }
 
-char	*interpreter_quoted(t_shell *self, t_node *node)
+char	*expander_quoted(t_shell *self, t_node *node)
 {
 	t_string	string;
 	char		*result;
@@ -54,7 +79,7 @@ char	*interpreter_quoted(t_shell *self, t_node *node)
 	string_init(&string);
 	while (node)
 	{
-		temp = interpreter_node(self, node);
+		temp = expander_node(self, node);
 		string_push(&string, temp);
 		free(temp);
 		node = node->next;

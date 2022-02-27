@@ -6,15 +6,15 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:56:56 by araramya          #+#    #+#             */
-/*   Updated: 2022/02/27 01:17:42 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/27 19:16:45 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	buildin_echo(t_shell *self, t_node *node)
+int	buildin_echo(int argc, char **argv)
 {
-	(void)self;
-	(void)node;
+	(void)argc;
+	(void)argv;
 	return (0);
 }

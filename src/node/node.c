@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 20:34:11 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/27 13:22:00 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/27 19:42:46 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_node	*node_create(t_node_kind kind)
 	node->pipe = NULL;
 	node->in_quote = NULL;
 	node->value = NULL;
+	node->merged = NULL;
 	return (node);
 }
 
@@ -89,6 +90,8 @@ void	node_destroy(t_node *self)
 		node_destroy(self->target);
 	if (self->value != NULL)
 		free(self->value);
+	if (self->merged != NULL)
+		free(self->merged);
 	free(self);
 }
 

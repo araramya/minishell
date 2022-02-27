@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 00:32:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/27 17:35:57 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/27 19:36:48 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_node	*parser_simple_word(t_parser *self)
 		result = node_create(NODE_WORD);
 	result->value = ft_strdup(word->slice);
 	if (parser_check(self, T_WORD | T_DOLLAR_SIGN))
-		result->next = parser_simple_word(self);
+		result->merged = parser_simple_word(self);
 	return (result);
 }
 
