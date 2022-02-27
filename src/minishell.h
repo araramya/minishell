@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/27 17:25:10 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/27 17:35:35 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ typedef enum e_token_kind
 	T_DOUBLE_GREAT = 1 << 8,
 	T_VERTICAL_BAR = 1 << 9,
 	T_SEMICOLON = 1 << 10,
-	T_EQUALS = 1 << 11,
 	T_EOF = 1 << 12
 }					t_token_kind;
 
@@ -118,19 +117,9 @@ typedef enum e_node_kind
 	NODE_WORD = 1 << 1,
 	NODE_VARIABLE = 1 << 2,
 	NODE_QUOTED = 1 << 3,
-	NODE_BINARY = 1 << 4,
 }					t_node_kind;
 
 const char			*node_kind_to_string(t_node_kind kind);
-
-typedef enum e_binary_kind
-{
-	BINARY_NONE = 1 << 0,
-	BINARY_EQUALS = 1 << 1
-}					t_binary_kind;
-
-t_binary_kind		token_kind_to_binary_kind(t_token_kind kind);
-const char			*binary_kind_to_string(t_binary_kind kind);
 
 typedef enum e_redirect_kind
 {
@@ -148,7 +137,6 @@ typedef struct s_node
 {
 	t_node_kind		kind;
 	t_redirect_kind	redirect_kind;
-	t_binary_kind	binary_kind;
 	struct s_node	*lhs;
 	struct s_node	*rhs;
 	struct s_node	*next;
@@ -190,7 +178,6 @@ t_node				*parser_pipe(t_parser *self);
 t_node				*parser_quoted(t_parser *self);
 t_node				*parser_simple_command(t_parser *self);
 t_node				*parser_word(t_parser *self);
-t_node				*parser_binary(t_parser *self);
 t_node				*parser_simple_word(t_parser *self);
 
 // ENV
@@ -225,7 +212,6 @@ int					shell_start(t_shell *self);
 // INTEPRETER
 char				**interpreter_eval(t_shell *self, t_node *node);
 char				*interpreter_quoted(t_shell *self, t_node *node);
-char				*interpreter_binary(t_shell *self, t_node *node);
 char				*interpreter_node(t_shell *self, t_node *node);
 
 // ARGUMENTS

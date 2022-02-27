@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 00:58:31 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/24 01:00:42 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/27 17:33:36 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ t_token	*lexer_symbols(t_lexer *self, char peek)
 		return (token_create(T_VERTICAL_BAR, ft_strdup("|")));
 	if (peek == ';')
 		return (token_create(T_SEMICOLON, ft_strdup(";")));
-	if (peek == '=')
-		return (token_create(T_EQUALS, ft_strdup("=")));
 	if (peek == '\\')
 	{
 		self->cursor++;

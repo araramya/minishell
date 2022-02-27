@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:57:15 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:49:24 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/27 17:36:38 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ static const char	*token_kind_to_string_symbols(t_token_kind kind)
 		return ("T_VERTICAL_BAR");
 	if ((kind & T_SEMICOLON) != 0)
 		return ("T_SEMICOLON");
-	if ((kind & T_EQUALS) != 0)
-		return ("T_EQUALS");
 	return ("T_UNKNOWN");
 }
 
