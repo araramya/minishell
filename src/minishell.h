@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/27 19:36:57 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/28 01:23:17 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,8 +221,8 @@ void				argument_destroy(char **arguments);
 int					argument_size(char **arguments);
 
 // BUILTIN
-int					builtin_unset(int argc, char **argv);
-int					builtin_export(int argc, char **argv);
+int					builtin_unset(t_env *env, int argc, char **argv);
+int					builtin_export(t_env *env, int argc, char **argv);
 int					buildin_echo(int argc, char **argv);
 int					buildin_cd(int argc, char **argv);
 int					buildin_exit(int argc, char **argv);
