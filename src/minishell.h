@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/28 01:23:17 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/01 01:06:25 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_string
 void				string_init(t_string *self);
 int					string_push(t_string *self, const char *src);
 int					string_deinit(t_string *self);
+char				*string_freeze(t_string *self);
 
 // TOKEN
 typedef enum e_token_kind
@@ -211,9 +212,9 @@ int					shell_execute(t_shell *self, char *input);
 int					shell_start(t_shell *self);
 
 // INTEPRETER
-char				**expander_eval(t_shell *self, t_node *node);
-char				*expander_quoted(t_shell *self, t_node *node);
-char				*expander_node(t_shell *self, t_node *node);
+char				**expander_eval(t_node *node);
+char				*expander_quoted(t_node *node);
+char				*expander_node(t_node *node);
 
 // ARGUMENTS
 void				argument_print(char **arguments);
@@ -221,8 +222,8 @@ void				argument_destroy(char **arguments);
 int					argument_size(char **arguments);
 
 // BUILTIN
-int					builtin_unset(t_env *env, int argc, char **argv);
-int					builtin_export(t_env *env, int argc, char **argv);
+int					builtin_unset(t_env **env, int argc, char **argv);
+int					builtin_export(t_env **env, int argc, char **argv);
 int					buildin_echo(int argc, char **argv);
 int					buildin_cd(int argc, char **argv);
 int					buildin_exit(int argc, char **argv);

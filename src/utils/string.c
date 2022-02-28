@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:41:46 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:30:35 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/02/28 16:44:11 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,19 @@ int	string_deinit(t_string *self)
 		self->buffer = NULL;
 	}
 	return (0);
+}
+
+/**
+ * @brief Converts struct ot char*
+ * 
+ * @param self 
+ * @return char* 
+ */
+char	*string_freeze(t_string *self)
+{
+	char	*result;
+
+	result = ft_strdup(self->buffer);
+	string_deinit(self);
+	return (result);
 }

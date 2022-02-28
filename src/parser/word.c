@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 00:32:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/27 19:36:48 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/01 00:26:13 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,13 @@ t_node	*parser_simple_word(t_parser *self)
  */
 t_node	*parser_word(t_parser *self)
 {
+	t_node	*temp;
+
 	if (parser_match2(self, T_DOUBLE_QUOTE))
-		return (parser_quoted(self));
-	return (parser_simple_word(self));
+		temp = parser_quoted(self);
+	else
+		temp = parser_simple_word(self);
+	if (!parser_check(self, T_WHITESPACE | T_EOF))
+		temp->merged = parser_word(self);
+	return (temp);
 }

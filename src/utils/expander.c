@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	**expander_eval(t_shell *self, t_node *node)
+char	**expander_eval(t_node *node)
 {
 	char	**result;
 	size_t	size;
@@ -25,26 +25,34 @@ char	**expander_eval(t_shell *self, t_node *node)
 	index = 0;
 	while (index < size)
 	{
-		result[index++] = expander_node(self, node);
+		result[index++] = expander_node(node);
 		node = node->next;
 	}
 	result[index] = NULL;
 	return (result);
 }
 
-static char	*expander_word(t_shell *self, t_node *node)
+static char	*expander_simple_word(t_node *node)
+{
+	if ((node->kind & NODE_VARIABLE) != 0)
+		return (getenv(node->value));
+	if ((node->kind & NODE_QUOTED) != 0)
+		return (expander_quoted(node->in_quote));
+	return (node->value);
+}
+
+static char	*expander_word(t_node *node)
 {
 	t_string	temp;
-	char		*result;
 	t_node		*merge;
 	char		*temp_value;
 
 	string_init(&temp);
-	string_push(&temp, node->value);
+	string_push(&temp, expander_simple_word(node));
 	merge = node->merged;
 	while (merge)
 	{
-		temp_value = expander_node(self, merge);
+		temp_value = expander_simple_word(merge);
 		if (temp_value)
 		{
 			string_push(&temp, temp_value);
@@ -52,39 +60,30 @@ static char	*expander_word(t_shell *self, t_node *node)
 		}
 		merge = merge->merged;
 	}
-	result = ft_strdup(temp.buffer);
-	string_deinit(&temp);
-	return (result);
+	return (string_freeze(&temp));
 }
 
-char	*expander_node(t_shell *self, t_node *node)
+char	*expander_node(t_node *node)
 {
 	if (!node)
 		return (NULL);
-	if ((node->kind & NODE_WORD) != 0)
-		return (expander_word(self, node));
-	if ((node->kind & NODE_VARIABLE) != 0)
-		return (ft_strdup(getenv(node->value)));
-	if ((node->kind & NODE_QUOTED) != 0)
-		return (expander_quoted(self, node->in_quote));
+	if ((node->kind & (NODE_WORD | NODE_VARIABLE | NODE_QUOTED)) != 0)
+		return (expander_word(node));
 	return (NULL);
 }
 
-char	*expander_quoted(t_shell *self, t_node *node)
+char	*expander_quoted(t_node *node)
 {
 	t_string	string;
-	char		*result;
 	char		*temp;
 
 	string_init(&string);
 	while (node)
 	{
-		temp = expander_node(self, node);
+		temp = expander_node(node);
 		string_push(&string, temp);
 		free(temp);
 		node = node->next;
 	}
-	result = ft_strdup(string.buffer);
-	string_deinit(&string);
-	return (result);
+	return (string_freeze(&string));
 }

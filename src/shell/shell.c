@@ -6,20 +6,20 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/27 19:25:20 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/01 01:13:40 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	shell_builtin(int argc, char **argv)
+static int	shell_builtin(t_shell *self, int argc, char **argv)
 {
 	if (argc == 0)
 		return (1);
 	if (ft_strcmp(argv[0], "export") == 0)
-		return (builtin_export(argc, argv));
+		return (builtin_export(&self->env, argc, argv));
 	if (ft_strcmp(argv[0], "unset") == 0)
-		return (builtin_unset(argc, argv));
+		return (builtin_unset(&self->env, argc, argv));
 	if (ft_strcmp(argv[0], "pwd") == 0)
 		return (buildin_pwd());
 	if (ft_strcmp(argv[0], "cd") == 0)
@@ -50,12 +50,12 @@ int	shell_execute(t_shell *self, char *input)
 		node = parser_parse(&self->parser, tokens);
 		if (node && (node->kind & NODE_COMMAND) != 0)
 		{
-			argv = expander_eval(self, node->arguments);
+			argv = expander_eval(node->arguments);
 			argc = argument_size(argv);
-			shell_builtin(argc, argv);
+			shell_builtin(self, argc, argv);
 			argument_destroy(argv);
-			node_destroy(node);
 		}
+		node_destroy(node);
 	}
 	add_history(input);
 	free(input);
