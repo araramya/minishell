@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 20:34:11 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/27 19:42:46 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/01 18:46:10 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	node_destroy(t_node *self)
 	if (self->value != NULL)
 		free(self->value);
 	if (self->merged != NULL)
-		free(self->merged);
+		node_destroy(self->merged);
 	free(self);
 }
 

@@ -35,10 +35,10 @@ char	**expander_eval(t_node *node)
 static char	*expander_simple_word(t_node *node)
 {
 	if ((node->kind & NODE_VARIABLE) != 0)
-		return (getenv(node->value));
+		return (ft_strdup(getenv(node->value)));
 	if ((node->kind & NODE_QUOTED) != 0)
 		return (expander_quoted(node->in_quote));
-	return (node->value);
+	return (ft_strdup(node->value));
 }
 
 static char	*expander_word(t_node *node)
@@ -48,7 +48,9 @@ static char	*expander_word(t_node *node)
 	char		*temp_value;
 
 	string_init(&temp);
-	string_push(&temp, expander_simple_word(node));
+	temp_value = expander_simple_word(node);
+	string_push(&temp, temp_value);
+	free(temp_value);
 	merge = node->merged;
 	while (merge)
 	{
