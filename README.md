@@ -23,8 +23,8 @@
   - [ ] “<<” read input from the current source until a line containing only the delimiter is seen. it doesn’t need to update history!
   - [ ] “>>” should redirect output with append mode.
 - [ ] Pipes | The output of each command in the pipeline is connected via a pipe to the input of the next command.
-- [ ] Environment variables ($ followed by characters) should expand to their values.
-- [ ] $? should expand to the exit status of the most recently executed foreground
+- [x] Environment variables ($ followed by characters) should expand to their values.
+- [x] $? should expand to the exit status of the most recently executed foreground
       pipeline.
 - [ ] ctrl-C ctrl-D ctrl-\ should work like in bash.
 - When interactive:
