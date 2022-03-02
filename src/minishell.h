@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/01 01:06:25 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:22:10 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,21 +183,24 @@ t_node				*parser_word(t_parser *self);
 t_node				*parser_simple_word(t_parser *self);
 
 // ENV
+# define TABLE_SIZE 1000
+
 typedef struct s_env
 {
-	char			*name;
+	char			*key;
 	char			*value;
 	struct s_env	*next;
 }					t_env;
 
-t_env				*env_create(char *name, char *value);
-t_env				*env_last(t_env *self);
-t_env				*env_push(t_env *self, t_env *src);
-t_env				*env_set(t_env *self, char *name, char *value);
-t_env				*env_find(t_env *self, char *name);
-t_env				*env_unset(t_env *self, char *name);
-void				env_destroy(t_env *self, bool recursive);
-char				*env_get(t_env *self, char *name);
+void				env_init(void);
+void				env_set(char *key, char *value);
+void				env_unset(t_env ***env, char *key);
+char				*env_get(char *key);
+void				env_deinit(void);
+void				env_destroy(t_env *env);
+t_env				*env_pair(char *key, char *value);
+size_t				env_hash(char *key);
+void				env_print(const char *prefix);
 
 // SHELL
 typedef struct s_shell
@@ -205,7 +208,6 @@ typedef struct s_shell
 	int				code;
 	t_lexer			lexer;
 	t_parser		parser;
-	t_env			*env;
 }					t_shell;
 
 int					shell_execute(t_shell *self, char *input);
@@ -222,11 +224,12 @@ void				argument_destroy(char **arguments);
 int					argument_size(char **arguments);
 
 // BUILTIN
-int					builtin_unset(t_env **env, int argc, char **argv);
-int					builtin_export(t_env **env, int argc, char **argv);
+int					builtin_unset(int argc, char **argv);
+int					builtin_export(int argc, char **argv);
 int					buildin_echo(int argc, char **argv);
 int					buildin_cd(int argc, char **argv);
 int					buildin_exit(int argc, char **argv);
+int					builtin_env(void);
 int					buildin_pwd(void);
 
 #endif // MINISHELL_H77

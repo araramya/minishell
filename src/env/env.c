@@ -6,67 +6,108 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:34:13 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/26 22:51:39 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:22:37 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*env_create(char *name, char *value)
+t_env	**g_env = NULL;
+
+void	env_print(const char *prefix)
 {
-	t_env	*env;
+	size_t	i;
+	t_env	*entry;
 
-	env = ft_calloc(1, sizeof(t_env));
-	if (!env)
-		return (NULL);
-	env->name = ft_strdup(name);
-	env->value = ft_strdup(value);
-	env->next = NULL;
-	return (env);
-}
-
-t_env	*env_last(t_env *self)
-{
-	while (self != NULL && self->next != NULL)
-		self = self->next;
-	return (self);
-}
-
-t_env	*env_push(t_env *self, t_env *src)
-{
-	t_env	*last;
-
-	if (self == NULL)
-		return (src);
-	last = env_last(self);
-	last->next = src;
-	return (last->next);
-}
-
-t_env	*env_set(t_env *self, char *name, char *value)
-{
-	t_env	*find;
-
-	find = env_find(self, name);
-	if (find)
+	i = 0;
+	while (i < TABLE_SIZE)
 	{
-		if (find->value)
-			free(find->value);
-		find->value = ft_strdup(value);
-		return (find);
+		entry = g_env[i++];
+		while (entry)
+		{
+			printf("%s%s=%s\n", prefix, entry->key, entry->value);
+			entry = entry->next;
+		}
 	}
-	return (env_push(self, env_create(name, value)));
 }
 
-void	env_destroy(t_env *self, bool recursive)
+void	env_set(char *key, char *value)
 {
-	if (!self)
+	size_t	bucket;
+	t_env	*entry;
+	t_env	*prev;
+
+	bucket = env_hash(key);
+	entry = g_env[bucket];
+	if (value == NULL)
+		return (env_unset(&g_env, key));
+	if (!entry)
+	{
+		g_env[bucket] = env_pair(key, value);
 		return ;
-	if (self->next && recursive)
-		env_destroy(self->next, recursive);
-	if (self->name)
-		free(self->name);
-	if (self->value)
-		free(self->value);
-	free(self);
+	}
+	while (entry)
+	{
+		if (ft_strcmp(entry->key, key) == 0)
+		{
+			free(entry->value);
+			entry->value = ft_strdup(value);
+			return ;
+		}
+		prev = entry;
+		entry = entry->next;
+	}
+	prev->next = env_pair(key, value);
+}
+
+char	*env_get(char *key)
+{
+	size_t	bucket;
+	t_env	*entry;
+	char	*temp;
+
+	bucket = env_hash(key);
+	entry = g_env[bucket];
+	while (entry)
+	{
+		if (ft_strcmp(entry->key, key) == 0)
+			return (entry->value);
+		entry = entry->next;
+	}
+	temp = getenv(key);
+	if (temp)
+	{
+		env_set(key, temp);
+		return (temp);
+	}
+	return (NULL);
+}
+
+void	env_init(void)
+{
+	size_t	i;
+
+	if (g_env)
+		env_deinit();
+	g_env = malloc(TABLE_SIZE * sizeof(t_env));
+	i = 0;
+	while (i < TABLE_SIZE)
+		g_env[i++] = NULL;
+}
+
+void	env_deinit(void)
+{
+	size_t	i;
+
+	if (!g_env)
+		return ;
+	i = 0;
+	while (i < TABLE_SIZE)
+	{
+		if (g_env[i] != NULL)
+			env_destroy(g_env[i]);
+		++i;
+	}
+	free(g_env);
+	g_env = NULL;
 }

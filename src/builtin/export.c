@@ -6,24 +6,48 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 16:58:43 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/28 15:05:04 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/02 15:24:47 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_export(t_env **env, int argc, char **argv)
+static bool	export_split(char *value, char **a, char **b)
 {
-	t_lexer	lexer;
-	t_token	*tokens;
+	size_t	i;
+	size_t	len;
 
-	(void)env;
+	i = 0;
+	len = ft_strlen(value);
+	while (value[i] != '=' && value[i] != '\0')
+		i++;
+	if (value[i] == '\0')
+		return (false);
+	*a = ft_substr(value, 0, i++);
+	*b = ft_substr(value, i, len - i);
+	return (true);
+}
+
+int	builtin_export(int argc, char **argv)
+{
+	char	*a;
+	char	*b;
+	int		code;
+
+	code = 0;
 	if (argc < 2)
-		return (0);
-	tokens = lexer_lex(&lexer, argv[1]);
-	if (!tokens || lexer.error)
-		return (1);
-	token_print(tokens);
-	token_destroy(tokens);
-	return (0);
+		env_print("declare -x ");
+	else if (export_split(argv[1], &a, &b))
+	{
+		if (ft_strchr(a, ' '))
+		{
+			printf("export: '%s' is not a valid identifier\n", a);
+			code = 1;
+		}
+		else
+			env_set(a, b);
+		free(a);
+		free(b);
+	}
+	return (code);
 }

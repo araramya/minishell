@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/26 16:27:00 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 16:16:06 by aabajyan         ###   ########.fr       */
+/*   Created: 2022/03/02 16:21:53 by aabajyan          #+#    #+#             */
+/*   Updated: 2022/03/02 16:22:26 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_unset(int argc, char **argv)
+int	builtin_env(void)
 {
-	if (argc > 1)
-		env_set(argv[1], NULL);
+	env_print("");
 	return (0);
 }
