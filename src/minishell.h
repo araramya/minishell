@@ -6,13 +6,14 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 16:22:10 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:39:53 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <errno.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
