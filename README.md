@@ -7,13 +7,13 @@
 - [x] Show a prompt when waiting for a new command.
 - [x] Have a working History.
 - [ ] Search and launch the right executable (based on the PATH variable or by using relative or absolute path)
-- [ ] It must implement the builtins:
+- [x] It must implement the builtins:
   - [x] echo with option -n
   - [x] cd with only a relative or absolute path
   - [x] pwd with no options
-  - [ ] export with no options
+  - [x] export with no options
   - [x] unset with no options
-  - [ ] env with no options or arguments
+  - [x] env with no options or arguments
   - [x] exit with no options
 - [x] ’ inhibit all interpretation of a sequence of characters.
 - [x] " inhibit all interpretation of a sequence of characters except for $.
