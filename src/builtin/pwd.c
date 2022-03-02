@@ -6,13 +6,13 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:57:02 by araramya          #+#    #+#             */
-/*   Updated: 2022/02/27 19:11:47 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/02 17:08:14 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	buildin_pwd(void)
+int	builtin_pwd(void)
 {
 	char	buffer[PATH_MAX];
 

@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/26 17:56:12 by marvin@42.f       #+#    #+#             */
-/*   Updated: 2022/03/02 17:08:14 by aabajyan         ###   ########.fr       */
+/*   Created: 2022/03/02 16:58:30 by aabajyan          #+#    #+#             */
+/*   Updated: 2022/03/02 16:59:20 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_cd(int argc, char **argv)
+char	*ft_itoa(int n)
 {
-	char	*home;
+	char			buffer[sizeof(int) * CHAR_BIT / 3 + 3];
+	char			*str;
+	unsigned int	i;
 
-	if (argc > 1)
-		home = argv[1];
-	else
-		home = getenv("HOME");
-	if (chdir(home) != 0)
+	str = buffer + sizeof(buffer);
+	i = (unsigned)n;
+	if (n < 0)
+		i = -i;
+	*--str = '\0';
+	while (i > 9)
 	{
-		printf("cd: %s: %s\n", home, strerror(errno));
-		return (1);
+		*--str = (i % 10) + '0';
+		i /= 10;
 	}
-	return (0);
+	*--str = i + '0';
+	if (n < 0)
+		*--str = '-';
+	return (ft_strdup(str));
 }

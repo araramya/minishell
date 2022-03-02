@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 16:39:53 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/02 17:08:14 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void				*ft_memset(void *buffer, int c, size_t size);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strchr(const char *str, int c);
 long				ft_atoi(const char *str);
+char				*ft_itoa(int value);
 
 // STRING
 typedef struct s_string
@@ -227,10 +228,10 @@ int					argument_size(char **arguments);
 // BUILTIN
 int					builtin_unset(int argc, char **argv);
 int					builtin_export(int argc, char **argv);
-int					buildin_echo(int argc, char **argv);
-int					buildin_cd(int argc, char **argv);
-int					buildin_exit(int argc, char **argv);
+int					builtin_echo(int argc, char **argv);
+int					builtin_cd(int argc, char **argv);
+int					builtin_exit(int argc, char **argv);
 int					builtin_env(void);
-int					buildin_pwd(void);
+int					builtin_pwd(void);
 
 #endif // MINISHELL_H77

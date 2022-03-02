@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:34:13 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 16:22:37 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/02 17:06:44 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	env_print(const char *prefix)
 		entry = g_env[i++];
 		while (entry)
 		{
-			printf("%s%s=%s\n", prefix, entry->key, entry->value);
+			if (ft_strcmp("?", entry->key) != 0)
+				printf("%s%s=%s\n", prefix, entry->key, entry->value);
 			entry = entry->next;
 		}
 	}

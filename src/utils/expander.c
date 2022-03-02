@@ -34,8 +34,15 @@ char	**expander_eval(t_node *node)
 
 static char	*expander_simple_word(t_node *node)
 {
+	char	*temp;
+
 	if ((node->kind & NODE_VARIABLE) != 0)
-		return (ft_strdup(env_get(node->value)));
+	{
+		temp = env_get(node->value);
+		if (!temp)
+			return (NULL);
+		return (ft_strdup(temp));
+	}
 	if ((node->kind & NODE_QUOTED) != 0)
 		return (expander_quoted(node->in_quote));
 	return (ft_strdup(node->value));

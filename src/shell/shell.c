@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 15:10:11 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/02 17:13:37 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,20 @@ static int	shell_builtin(int argc, char **argv)
 {
 	if (argc == 0)
 		return (1);
+	if (ft_strcmp(argv[0], "env") == 0)
+		return (builtin_env());
 	if (ft_strcmp(argv[0], "export") == 0)
 		return (builtin_export(argc, argv));
 	if (ft_strcmp(argv[0], "unset") == 0)
 		return (builtin_unset(argc, argv));
 	if (ft_strcmp(argv[0], "pwd") == 0)
-		return (buildin_pwd());
+		return (builtin_pwd());
 	if (ft_strcmp(argv[0], "cd") == 0)
-		return (buildin_cd(argc, argv));
+		return (builtin_cd(argc, argv));
 	if (ft_strcmp(argv[0], "exit") == 0)
-		return (buildin_exit(argc, argv));
+		return (builtin_exit(argc, argv));
 	if (ft_strcmp(argv[0], "echo") == 0)
-		return (buildin_echo(argc, argv));
+		return (builtin_echo(argc, argv));
 	return (0);
 }
 
@@ -43,6 +45,7 @@ int	shell_execute(t_shell *self, char *input)
 	t_node	*node;
 	char	**argv;
 	int		argc;
+	char	*temp;
 
 	tokens = lexer_lex(&self->lexer, input);
 	if (tokens && !self->lexer.error)
@@ -52,7 +55,9 @@ int	shell_execute(t_shell *self, char *input)
 		{
 			argv = expander_eval(node->arguments);
 			argc = argument_size(argv);
-			shell_builtin(argc, argv);
+			temp = ft_itoa(shell_builtin(argc, argv));
+			env_set("?", temp);
+			free(temp);
 			argument_destroy(argv);
 		}
 		node_destroy(node);
@@ -75,6 +80,7 @@ int	shell_start(t_shell *self)
 
 	self->code = 0;
 	env_init();
+	env_set("?", "0");
 	while (true)
 	{
 		input = readline("minishell $ ");
