@@ -6,7 +6,7 @@
 - [x] Not use more than one global variable, think about it and be ready to explain why you do it.
 - [x] Show a prompt when waiting for a new command.
 - [x] Have a working History.
-- [ ] Search and launch the right executable (based on the PATH variable or by using relative or absolute path)
+- [x] Search and launch the right executable (based on the PATH variable or by using relative or absolute path)
 - [x] It must implement the builtins:
   - [x] echo with option -n
   - [x] cd with only a relative or absolute path

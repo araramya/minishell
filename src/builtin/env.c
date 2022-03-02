@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 16:21:53 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 16:22:26 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/02 19:58:09 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 int	builtin_env(void)
 {
-	env_print("");
+	char	**env;
+
+	env = env_to_string();
+	argument_print(env, "");
+	argument_destroy(env);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:34:13 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 17:06:44 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/02 19:52:47 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,28 @@
 
 t_env	**g_env = NULL;
 
-void	env_print(const char *prefix)
+char	**env_to_string(void)
 {
 	size_t	i;
+	size_t	j;
 	t_env	*entry;
+	char	**result;
 
+	result = ft_calloc(TABLE_SIZE, sizeof(char *));
 	i = 0;
+	j = 0;
 	while (i < TABLE_SIZE)
 	{
 		entry = g_env[i++];
 		while (entry)
 		{
 			if (ft_strcmp("?", entry->key) != 0)
-				printf("%s%s=%s\n", prefix, entry->key, entry->value);
+				result[j++] = env_item_to_string(entry);
 			entry = entry->next;
 		}
 	}
+	result[j] = NULL;
+	return (result);
 }
 
 void	env_set(char *key, char *value)

@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 17:08:14 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/02 20:39:14 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strchr(const char *str, int c);
 long				ft_atoi(const char *str);
 char				*ft_itoa(int value);
+char				**ft_split(char const *s, char c);
 
 // STRING
 typedef struct s_string
@@ -202,7 +203,9 @@ void				env_deinit(void);
 void				env_destroy(t_env *env);
 t_env				*env_pair(char *key, char *value);
 size_t				env_hash(char *key);
-void				env_print(const char *prefix);
+char				**env_to_string(void);
+char				*env_item_to_string(t_env *env);
+int					env_from_string(char *string);
 
 // SHELL
 typedef struct s_shell
@@ -213,7 +216,8 @@ typedef struct s_shell
 }					t_shell;
 
 int					shell_execute(t_shell *self, char *input);
-int					shell_start(t_shell *self);
+int					shell_bin(char **argv);
+int					shell_start(t_shell *self, char **envp);
 
 // INTEPRETER
 char				**expander_eval(t_node *node);
@@ -221,7 +225,7 @@ char				*expander_quoted(t_node *node);
 char				*expander_node(t_node *node);
 
 // ARGUMENTS
-void				argument_print(char **arguments);
+void				argument_print(char **arguments, char *prefix);
 void				argument_destroy(char **arguments);
 int					argument_size(char **arguments);
 
@@ -233,5 +237,7 @@ int					builtin_cd(int argc, char **argv);
 int					builtin_exit(int argc, char **argv);
 int					builtin_env(void);
 int					builtin_pwd(void);
+
+char				**shell_realpaths(const char *path);
 
 #endif // MINISHELL_H77

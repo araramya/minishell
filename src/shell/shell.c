@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 17:13:37 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/02 20:39:34 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	shell_builtin(int argc, char **argv)
 {
 	if (argc == 0)
-		return (1);
+		return (0);
 	if (ft_strcmp(argv[0], "env") == 0)
 		return (builtin_env());
 	if (ft_strcmp(argv[0], "export") == 0)
@@ -30,7 +30,7 @@ static int	shell_builtin(int argc, char **argv)
 		return (builtin_exit(argc, argv));
 	if (ft_strcmp(argv[0], "echo") == 0)
 		return (builtin_echo(argc, argv));
-	return (0);
+	return (shell_bin(argv));
 }
 
 /**
@@ -74,13 +74,17 @@ int	shell_execute(t_shell *self, char *input)
  * @param self 
  * @return int 
  */
-int	shell_start(t_shell *self)
+int	shell_start(t_shell *self, char **envp)
 {
 	char	*input;
+	size_t	i;
 
 	self->code = 0;
 	env_init();
 	env_set("?", "0");
+	i = 0;
+	while (envp[i] != NULL)
+		env_from_string(envp[i++]);
 	while (true)
 	{
 		input = readline("minishell $ ");
