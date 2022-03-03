@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 17:26:26 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/03 22:37:14 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,23 @@ static int	shell_builtin(int argc, char **argv)
 	return (shell_bin(argv));
 }
 
+static int	shell_command(t_shell *self, t_node *command)
+{
+	char	**argv;
+	char	*temp;
+	int		argc;
+
+	argv = expander_eval(command->arguments);
+	argc = argument_size(argv);
+	temp = ft_itoa(shell_builtin(argc, argv));
+	env_set("?", temp);
+	free(temp);
+	argument_destroy(argv);
+	if (command->next)
+		return (shell_command(self, command->next));
+	return (0);
+}
+
 /**
  * @brief Executes a command line.
  * 
@@ -43,23 +60,13 @@ int	shell_execute(t_shell *self, char *input)
 {
 	t_token	*tokens;
 	t_node	*node;
-	char	**argv;
-	int		argc;
-	char	*temp;
 
 	tokens = lexer_lex(&self->lexer, input);
 	if (tokens && !self->lexer.error)
 	{
 		node = parser_parse(&self->parser, tokens);
 		if (node && (node->kind & NODE_COMMAND) != 0)
-		{
-			argv = expander_eval(node->arguments);
-			argc = argument_size(argv);
-			temp = ft_itoa(shell_builtin(argc, argv));
-			env_set("?", temp);
-			free(temp);
-			argument_destroy(argv);
-		}
+			shell_command(self, node);
 		node_destroy(node);
 	}
 	add_history(input);

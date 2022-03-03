@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 17:19:37 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/03 20:48:46 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ void				node_print_value(char *name, char *value, int indent);
 typedef struct s_parser
 {
 	bool			error;
+	bool			in_quote;
 	t_token			*tokens;
 	t_token			*current;
 	int				index;
@@ -180,6 +181,7 @@ t_node				*parser_parse(t_parser *self, t_token *tokens);
 t_token				*parser_advance(t_parser *self);
 t_token				*parser_check(t_parser *self, t_token_kind kind);
 t_token				*parser_match(t_parser *self, t_token_kind kind);
+t_token				*parser_notmatch(t_parser *self, t_token_kind kind);
 t_token				*parser_match2(t_parser *self, t_token_kind kind);
 t_token				*parser_consume(t_parser *self, t_token_kind kind);
 t_node				*parser_command_line(t_parser *self);

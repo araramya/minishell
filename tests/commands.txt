@@ -17,8 +17,13 @@ echo $TEST $TEST
 echo "$1TEST"
 echo "$T1TEST"
 ech\o "'$TEST'"
-echo '$TEST'
+echo "cat lol.c | cat > lol.c"
+echo '$TEST';
+echo;
+echo ;
+echo -n Hello; echo -n ' '; echo $USER;
 pwd
+export TEST=LOL; echo $TEST
 cd dasdsadsad
 cd src
 cd ./src

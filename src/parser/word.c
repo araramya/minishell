@@ -6,25 +6,11 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 00:32:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 13:02:24 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/03 22:36:37 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * @brief Same as parser_match, but it ignores all whitespaces
- * 
- * @param self 
- * @param kind 
- * @return t_token* 
- */
-t_token	*parser_match2(t_parser *self, t_token_kind kind)
-{
-	while (parser_check(self, T_WHITESPACE))
-		parser_advance(self);
-	return (parser_match(self, kind));
-}
 
 /**
  * @brief Parse a quoted string
@@ -39,9 +25,11 @@ t_node	*parser_quoted(t_parser *self)
 	t_node	*in_quote;
 	t_node	*result;
 
+	self->in_quote = true;
 	in_quote = NULL;
-	while (!parser_match(self, T_DOUBLE_QUOTE | T_EOF))
+	while (parser_match(self, T_DOUBLE_QUOTE | T_EOF) == NULL)
 		in_quote = node_push(in_quote, parser_simple_word(self));
+	self->in_quote = false;
 	result = node_create(NODE_QUOTED);
 	if (!result)
 	{
@@ -50,6 +38,13 @@ t_node	*parser_quoted(t_parser *self)
 	}
 	result->in_quote = in_quote;
 	return (result);
+}
+
+static t_token	*parser_get_word(t_parser *self)
+{
+	if (self->in_quote)
+		return (parser_notmatch(self, T_DOUBLE_QUOTE | T_SEMICOLON | T_EOF));
+	return (parser_match(self, T_EOF | T_WORD | T_WHITESPACE));
 }
 
 /**
@@ -67,7 +62,7 @@ t_node	*parser_simple_word(t_parser *self)
 	t_node	*result;
 
 	is_env = (parser_match(self, T_DOLLAR_SIGN) != NULL);
-	word = parser_match(self, T_EOF | T_WORD | T_WHITESPACE);
+	word = parser_get_word(self);
 	if (!word || word->kind == T_EOF)
 	{
 		if (is_env)
@@ -104,7 +99,9 @@ t_node	*parser_word(t_parser *self)
 		temp = parser_quoted(self);
 	else
 		temp = parser_simple_word(self);
-	if (!parser_check(self, T_WHITESPACE | T_EOF))
+	if (temp && (parser_check(self,
+				T_WORD) != NULL || (!self->in_quote && parser_check(self,
+					T_DOUBLE_QUOTE) != NULL)))
 		temp->merged = parser_word(self);
 	return (temp);
 }
