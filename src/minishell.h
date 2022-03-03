@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 20:39:14 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/03 17:19:37 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ char				*ft_strchr(const char *str, int c);
 long				ft_atoi(const char *str);
 char				*ft_itoa(int value);
 char				**ft_split(char const *s, char c);
+void				ft_putstr_fd(char *s, int fd);
+void				ft_putchar_fd(char c, int fd);
+int					ft_isdigit(int c);
+int					ft_isalpha(int c);
+int					ft_isalnum(int c);
+int					ft_isspace(int c);
 
 // STRING
 typedef struct s_string
@@ -110,9 +116,8 @@ char				lexer_peek(t_lexer *self, int index);
 t_token				*lexer_single_quote(t_lexer *self);
 t_token				*lexer_symbols(t_lexer *self, char peek);
 t_token				*lexer_until(t_lexer *self, t_token_kind kind, t_check c);
-int					lexer_is_space(int c);
 int					lexer_is_word(int c);
-int					lexer_is_alnum(int c);
+char				*char_to_string(char c);
 
 // NODE
 typedef enum e_node_kind
@@ -215,9 +220,10 @@ typedef struct s_shell
 	t_parser		parser;
 }					t_shell;
 
+void				shell_init(t_shell *self, char **envp);
 int					shell_execute(t_shell *self, char *input);
 int					shell_bin(char **argv);
-int					shell_start(t_shell *self, char **envp);
+int					shell_start(t_shell *self);
 
 // INTEPRETER
 char				**expander_eval(t_node *node);

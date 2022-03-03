@@ -6,22 +6,11 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 14:13:21 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/23 21:51:37 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/03 01:46:15 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * @brief Check if charecter is space.
- * 
- * @param c 
- * @return int 
- */
-int	lexer_is_space(int c)
-{
-	return (c == ' ' || c == '\t');
-}
 
 /**
  * @brief Check if the charecter is word.
@@ -32,23 +21,6 @@ int	lexer_is_space(int c)
 int	lexer_is_word(int c)
 {
 	return (!ft_strchr(" \t$=|><;$\"'", c));
-}
-
-/**
- * @brief Check if the charecter is alpha or numeric
- * 
- * @param c 
- * @return int 
- */
-int	lexer_is_alnum(int c)
-{
-	if (c >= 'a' && c <= 'z')
-		return (1);
-	if (c >= 'A' && c <= 'Z')
-		return (1);
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
 }
 
 /**

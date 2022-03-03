@@ -1,32 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/19 19:30:33 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 16:40:23 by aabajyan         ###   ########.fr       */
+/*   Created: 2022/03/03 00:12:05 by aabajyan          #+#    #+#             */
+/*   Updated: 2022/03/03 00:12:13 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strdup(const char *s)
+int	ft_isdigit(int c)
 {
-	char	*ptr;
-	size_t	len;
-
-	len = ft_strlen(s) + 1;
-	ptr = malloc(len * sizeof(char));
-	if (!ptr)
-		return (NULL);
-	if (s)
-	{
-		ft_memcpy(ptr, s, len);
-		ptr[len - 1] = '\0';
-	}
-	else
-		*ptr = '\0';
-	return (ptr);
+	return (c >= '0' && c <= '9');
 }

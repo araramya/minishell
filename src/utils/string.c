@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:41:46 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/28 16:44:11 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/03 16:57:08 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,16 @@ int	string_push(t_string *self, const char *src)
 {
 	size_t	size;
 
-	if (!(self && src))
-		return (1);
 	size = ft_strlen(src);
+	if (!(self && size > 0))
+	{
+		if (self->buffer == NULL && src)
+		{
+			self->buffer = ft_calloc(1, sizeof(char));
+			self->buffer[0] = '\0';
+		}
+		return (1);
+	}
 	if (self->capacity < self->size + size)
 	{
 		self->capacity += size;
@@ -79,7 +86,10 @@ char	*string_freeze(t_string *self)
 {
 	char	*result;
 
-	result = ft_strdup(self->buffer);
+	if (self->buffer == NULL)
+		result = NULL;
+	else
+		result = ft_strdup(self->buffer);
 	string_deinit(self);
 	return (result);
 }

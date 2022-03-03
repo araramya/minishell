@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 00:32:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/01 00:26:13 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/03 13:02:24 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,22 @@ t_node	*parser_simple_word(t_parser *self)
 	is_env = (parser_match(self, T_DOLLAR_SIGN) != NULL);
 	word = parser_match(self, T_EOF | T_WORD | T_WHITESPACE);
 	if (!word || word->kind == T_EOF)
+	{
+		if (is_env)
+		{
+			result = node_create(NODE_WORD);
+			result->value = ft_strdup("$");
+			return (result);
+		}
 		return (NULL);
+	}
 	if (is_env)
 		result = node_create(NODE_VARIABLE);
 	else
 		result = node_create(NODE_WORD);
 	result->value = ft_strdup(word->slice);
 	if (parser_check(self, T_WORD | T_DOLLAR_SIGN))
-		result->merged = parser_simple_word(self);
+		result->merged = parser_word(self);
 	return (result);
 }
 

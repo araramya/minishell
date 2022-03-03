@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 20:39:34 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/03 17:26:26 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,8 @@ int	shell_execute(t_shell *self, char *input)
 	return (0);
 }
 
-/**
- * @brief Main shell loop.
- * 
- * @param self 
- * @return int 
- */
-int	shell_start(t_shell *self, char **envp)
+void	shell_init(t_shell *self, char **envp)
 {
-	char	*input;
 	size_t	i;
 
 	self->code = 0;
@@ -85,6 +78,18 @@ int	shell_start(t_shell *self, char **envp)
 	i = 0;
 	while (envp[i] != NULL)
 		env_from_string(envp[i++]);
+}
+
+/**
+ * @brief Main shell loop.
+ * 
+ * @param self 
+ * @return int 
+ */
+int	shell_start(t_shell *self)
+{
+	char	*input;
+
 	while (true)
 	{
 		input = readline("minishell $ ");

@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:26:19 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/01 18:46:54 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/03 01:54:28 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ t_token	*lexer_next(t_lexer *self)
 	}
 	if (peek == '\'')
 		return (lexer_single_quote(self));
-	if (lexer_is_space(peek))
-		return (lexer_until(self, T_WHITESPACE, lexer_is_space));
-	if (self->dollar_sign == true)
-		return (lexer_until(self, T_WORD, lexer_is_alnum));
-	return (lexer_until(self, T_WORD, lexer_is_word));
+	if (ft_isspace(peek))
+		return (lexer_until(self, T_WHITESPACE, ft_isspace));
+	if (ft_isalpha(peek))
+		return (lexer_until(self, T_WORD, ft_isalnum));
+	return (token_create(T_WORD, char_to_string(peek)));
 }
 
 /**

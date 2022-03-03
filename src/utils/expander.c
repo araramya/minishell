@@ -16,28 +16,41 @@ char	**expander_eval(t_node *node)
 {
 	char	**result;
 	size_t	size;
-	size_t	index;
+	size_t	i;
+	size_t	j;
+	char	*temp;
 
 	size = node_size(node);
 	if (size == 0)
 		return (NULL);
 	result = ft_calloc(size + 1, sizeof(char *));
-	index = 0;
-	while (index < size)
+	i = 0;
+	j = 0;
+	while (i++ < size)
 	{
-		result[index++] = expander_node(node);
+		temp = expander_node(node);
+		if (temp)
+			result[j++] = temp;
 		node = node->next;
 	}
-	result[index] = NULL;
+	result[j] = NULL;
 	return (result);
 }
 
 static char	*expander_simple_word(t_node *node)
 {
-	char	*temp;
+	char		*temp;
+	t_string	string;
 
 	if ((node->kind & NODE_VARIABLE) != 0)
 	{
+		if (!(ft_isalnum(node->value[0]) || node->value[0] == '?'))
+		{
+			string_init(&string);
+			string_push(&string, "$");
+			string_push(&string, node->value);
+			return (string_freeze(&string));
+		}
 		temp = env_get(node->value);
 		if (!temp)
 			return (NULL);
@@ -87,6 +100,7 @@ char	*expander_quoted(t_node *node)
 	char		*temp;
 
 	string_init(&string);
+	string_push(&string, "");
 	while (node)
 	{
 		temp = expander_node(node);
