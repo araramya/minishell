@@ -6,13 +6,13 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/04 13:39:37 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/04 19:25:35 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	shell_builtin(int argc, char **argv)
+int	shell_builtin(int argc, char **argv)
 {
 	if (argc == 0)
 		return (0);
@@ -33,18 +33,20 @@ static int	shell_builtin(int argc, char **argv)
 	return (shell_bin(argv));
 }
 
-static int	shell_command(t_shell *self, t_node *command)
+int	shell_command(t_node *command)
 {
 	char	**argv;
 	int		argc;
 	int		code;
 
+	if (command->pipe)
+		return (shell_pipe(command));
 	argv = expander_eval(command->arguments);
 	argc = argument_size(argv);
 	code = shell_builtin(argc, argv);
 	argument_destroy(argv);
 	if (command->next)
-		return (shell_command(self, command->next));
+		return (shell_command(command->next));
 	return (code);
 }
 
@@ -67,7 +69,7 @@ int	shell_execute(t_shell *self, char *input)
 		node = parser_parse(&self->parser, tokens);
 		if (node && (node->kind & NODE_COMMAND) != 0)
 		{
-			code = shell_command(self, node);
+			code = shell_command(node);
 			temp = ft_itoa(code);
 			env_set("?", temp);
 			free(temp);

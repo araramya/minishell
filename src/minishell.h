@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 20:48:46 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/04 19:25:41 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,10 @@ typedef struct s_shell
 }					t_shell;
 
 void				shell_init(t_shell *self, char **envp);
+int					shell_pipe(t_node *command);
+int					shell_command(t_node *command);
 int					shell_execute(t_shell *self, char *input);
+int					shell_builtin(int argc, char **argv);
 int					shell_bin(char **argv);
 int					shell_start(t_shell *self);
 
