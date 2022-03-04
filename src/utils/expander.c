@@ -61,7 +61,7 @@ static char	*expander_simple_word(t_node *node)
 	return (ft_strdup(node->value));
 }
 
-static char	*expander_word(t_node *node)
+char	*expander_word(t_node *node)
 {
 	t_string	temp;
 	t_node		*merge;
