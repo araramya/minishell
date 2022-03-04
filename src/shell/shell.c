@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 22:37:14 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/04 13:39:37 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,16 @@ static int	shell_builtin(int argc, char **argv)
 static int	shell_command(t_shell *self, t_node *command)
 {
 	char	**argv;
-	char	*temp;
 	int		argc;
+	int		code;
 
 	argv = expander_eval(command->arguments);
 	argc = argument_size(argv);
-	temp = ft_itoa(shell_builtin(argc, argv));
-	env_set("?", temp);
-	free(temp);
+	code = shell_builtin(argc, argv);
 	argument_destroy(argv);
 	if (command->next)
 		return (shell_command(self, command->next));
-	return (0);
+	return (code);
 }
 
 /**
@@ -60,13 +58,20 @@ int	shell_execute(t_shell *self, char *input)
 {
 	t_token	*tokens;
 	t_node	*node;
+	char	*temp;
+	int		code;
 
 	tokens = lexer_lex(&self->lexer, input);
 	if (tokens && !self->lexer.error)
 	{
 		node = parser_parse(&self->parser, tokens);
 		if (node && (node->kind & NODE_COMMAND) != 0)
-			shell_command(self, node);
+		{
+			code = shell_command(self, node);
+			temp = ft_itoa(code);
+			env_set("?", temp);
+			free(temp);
+		}
 		node_destroy(node);
 	}
 	add_history(input);

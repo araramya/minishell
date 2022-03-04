@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 20:39:24 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 22:44:49 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/04 13:57:56 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ static char	*shell_find_bin(char *f)
 int	shell_bin(char **argv)
 {
 	char	*path;
-	pid_t	pid;
 	int		code;
 	char	**envp;
 
@@ -63,11 +62,13 @@ int	shell_bin(char **argv)
 		return (1);
 	}
 	envp = env_to_string();
-	pid = fork();
-	if (pid == 0)
+	if (fork() == 0)
+	{
 		execve(path, argv, envp);
-	else
-		waitpid(pid, &code, 0);
+		perror("execvp failed");
+		exit(1);
+	}
+	wait(&code);
 	free(path);
 	argument_destroy(envp);
 	return (code);
