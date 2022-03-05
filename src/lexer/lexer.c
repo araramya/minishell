@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:26:19 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/05 01:30:39 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 17:00:04 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ t_token	*lexer_lex(t_lexer *self, const char *input)
 
 	self->cursor = 0;
 	self->error = false;
+	self->heredoc = false;
 	self->in_quotes = false;
 	self->dollar_sign = false;
 	self->input = input;
