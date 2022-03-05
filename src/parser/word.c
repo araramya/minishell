@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 00:32:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 22:36:37 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 01:57:43 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ t_node	*parser_quoted(t_parser *self)
 
 static t_token	*parser_get_word(t_parser *self)
 {
+	if (self->heredoc)
+		return (parser_notmatch(self, T_EOF));
 	if (self->in_quote)
 		return (parser_notmatch(self, T_DOUBLE_QUOTE | T_SEMICOLON | T_EOF));
 	return (parser_match(self, T_EOF | T_WORD | T_WHITESPACE));
@@ -78,7 +80,9 @@ t_node	*parser_simple_word(t_parser *self)
 	else
 		result = node_create(NODE_WORD);
 	result->value = ft_strdup(word->slice);
-	if (parser_check(self, T_WORD | T_DOLLAR_SIGN))
+	if (self->heredoc && self->current->kind != T_EOF)
+		result->merged = parser_simple_word(self);
+	else if (!self->heredoc && parser_check(self, T_WORD | T_DOLLAR_SIGN))
 		result->merged = parser_word(self);
 	return (result);
 }

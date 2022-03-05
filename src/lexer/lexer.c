@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:26:19 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 01:54:28 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 01:30:39 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_token	*lexer_single_quote(t_lexer *self)
 	char	*result;
 	char	peek;
 
-	if (self->in_quotes)
+	if (self->in_quotes || self->heredoc)
 		return (token_create(T_WORD, ft_strdup("'")));
 	start = ++self->cursor;
 	length = 0;
@@ -100,7 +100,7 @@ t_token	*lexer_lex(t_lexer *self, const char *input)
 		token_push(self->tokens, next);
 		next = lexer_next(self);
 	}
-	if (self->in_quotes)
+	if (self->in_quotes && !self->heredoc)
 	{
 		printf(LEXER_ERROR_UNTERIMATED_STRING);
 		self->error = true;

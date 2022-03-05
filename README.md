@@ -135,3 +135,4 @@ No checklist for bonus, because we are not doing it :P
 * bsdutils: https://github.com/dcantrell/bsdutils
 * coreutils: https://github.com/coreutils/coreutils
 * Bash parser: https://vorpaljs.github.io/bash-parser-playground/
+* Heredoc: https://www.oilshell.org/blog/2016/10/18.html

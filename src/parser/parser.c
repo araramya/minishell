@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 20:15:18 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 22:29:51 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 00:27:39 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,7 @@
  */
 t_node	*parser_parse(t_parser *self, t_token *tokens)
 {
-	self->tokens = tokens;
-	self->current = tokens;
-	self->error = false;
-	self->in_quote = false;
-	self->index = 0;
+	parser_init(self, tokens);
 	if (!parser_consume(self, T_BEGIN))
 		return (NULL);
 	return (parser_command_line(self));

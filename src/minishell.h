@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/04 21:10:28 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 10:35:41 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
+
+# define SHELL_TMP "/tmp/minishell"
 
 // LIBFT
 void				*ft_memcpy(void *dest, const void *src, size_t num);
@@ -59,6 +61,7 @@ typedef struct s_string
 
 void				string_init(t_string *self);
 int					string_push(t_string *self, const char *src);
+int					string_move(t_string *self, char *src);
 int					string_deinit(t_string *self);
 char				*string_freeze(t_string *self);
 
@@ -103,6 +106,7 @@ typedef struct s_lexer
 	t_token			*tokens;
 	const char		*input;
 	bool			in_quotes;
+	bool			heredoc;
 	bool			dollar_sign;
 	bool			error;
 	size_t			cursor;
@@ -136,8 +140,7 @@ typedef enum e_redirect_kind
 	R_NONE = 1 << 0,
 	R_LEFT = 1 << 1,
 	R_RIGHT = 1 << 2,
-	R_DOUBLE_LEFT = 1 << 3,
-	R_DOUBLE_RIGHT = 1 << 4
+	R_DOUBLE_RIGHT = 1 << 3
 }					t_redirect_kind;
 
 t_redirect_kind		token_kind_to_redirect_kind(t_token_kind kind);
@@ -173,11 +176,13 @@ typedef struct s_parser
 {
 	bool			error;
 	bool			in_quote;
+	bool			heredoc;
 	t_token			*tokens;
 	t_token			*current;
 	int				index;
 }					t_parser;
 
+void				parser_init(t_parser *self, t_token *tokens);
 t_node				*parser_parse(t_parser *self, t_token *tokens);
 t_token				*parser_advance(t_parser *self);
 t_token				*parser_check(t_parser *self, t_token_kind kind);
@@ -188,10 +193,14 @@ t_token				*parser_consume(t_parser *self, t_token_kind kind);
 t_node				*parser_command_line(t_parser *self);
 t_node				*parser_redirection(t_parser *self);
 t_node				*parser_pipe(t_parser *self);
+t_node				*parser_heredoc(t_parser *self);
 t_node				*parser_quoted(t_parser *self);
 t_node				*parser_simple_command(t_parser *self);
 t_node				*parser_word(t_parser *self);
 t_node				*parser_simple_word(t_parser *self);
+t_node				*parser_multiline(t_parser *self);
+char				*parser_join_values(t_node *node);
+char				*parser_get_identifer(t_parser *self);
 
 // ENV
 # define TABLE_SIZE 1000

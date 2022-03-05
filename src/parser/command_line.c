@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:45:09 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 22:34:04 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 00:03:11 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_node	*parser_pipe(t_parser *self)
 {
 	t_node	*command;
 
-	command = parser_redirection(self);
+	command = parser_heredoc(self);
 	if (!command)
 		return (NULL);
 	if (parser_match(self, T_VERTICAL_BAR))
@@ -64,7 +64,7 @@ t_node	*parser_redirection(t_parser *self)
 	t_token	*check;
 	int		check_enum;
 
-	check_enum = T_LESS | T_GREAT | T_DOUBLE_LESS | T_DOUBLE_GREAT;
+	check_enum = T_LESS | T_GREAT | T_DOUBLE_GREAT;
 	command = parser_simple_command(self);
 	check = parser_match(self, check_enum);
 	if (check)

@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:41:46 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 16:57:08 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 02:41:45 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,15 @@ int	string_push(t_string *self, const char *src)
 	while (*src != '\0')
 		self->buffer[self->size++] = *src++;
 	self->buffer[self->size] = '\0';
+	return (0);
+}
+
+int	string_move(t_string *self, char *src)
+{
+	if (!src)
+		return (1);
+	string_push(self, src);
+	free(src);
 	return (0);
 }
 

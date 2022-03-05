@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 19:12:53 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/24 01:05:51 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 10:36:00 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ t_redirect_kind	token_kind_to_redirect_kind(t_token_kind kind)
 		return (R_LEFT);
 	if ((kind & T_GREAT) != 0)
 		return (R_RIGHT);
-	if ((kind & T_DOUBLE_LESS) != 0)
-		return (R_DOUBLE_LEFT);
 	if ((kind & T_DOUBLE_GREAT) != 0)
 		return (R_DOUBLE_RIGHT);
 	return (R_NONE);
@@ -45,8 +43,6 @@ const char	*redirect_kind_to_string(t_redirect_kind kind)
 		return ("R_LEFT");
 	if ((kind & R_RIGHT) != 0)
 		return ("R_RIGHT");
-	if ((kind & R_DOUBLE_LEFT) != 0)
-		return ("R_DOUBLE_LEFT");
 	if ((kind & R_DOUBLE_RIGHT) != 0)
 		return ("R_DOUBLE_RIGHT");
 	return ("R_UNKNOWN");
