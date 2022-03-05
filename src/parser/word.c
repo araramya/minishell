@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 00:32:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/05 16:58:48 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 17:03:19 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,11 @@ t_node	*parser_simple_word(t_parser *self)
 	if (!word || word->kind == T_EOF)
 	{
 		if (is_env)
-			return (node_create_value(T_WORD, "$"));
+		{
+			result = node_create(NODE_WORD);
+			result->value = ft_strdup("$");
+			return (result);
+		}
 		return (NULL);
 	}
 	if (is_env)
