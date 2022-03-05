@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/05 16:41:29 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 16:53:18 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ typedef struct s_node
 }					t_node;
 
 t_node				*node_create(t_node_kind kind);
+t_node				*node_create_value(t_node_kind kind, char *value);
 t_node				*node_last(t_node *self);
 t_node				*node_push(t_node *self, t_node *src);
 void				node_print(t_node *self, int indent);

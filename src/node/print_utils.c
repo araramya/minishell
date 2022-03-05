@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:03:39 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/24 01:03:44 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 16:58:09 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,15 @@ void	node_print_value(char *name, char *value, int indent)
 		node_print_indent(indent);
 		printf("%s: '%s'\n", name, value);
 	}
+}
+
+t_node	*node_create_value(t_node_kind kind, char *value)
+{
+	t_node	*node;
+
+	node = node_create(kind);
+	if (!node)
+		return (NULL);
+	node->value = ft_strdup(value);
+	return (node);
 }
