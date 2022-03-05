@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/04 21:18:12 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 16:41:16 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	shell_command(t_node *command)
  * @param self 
  * @param input 
  */
-int	shell_execute(t_shell *self, char *input)
+void	shell_execute(t_shell *self, char *input)
 {
 	t_token	*tokens;
 	t_node	*node;
@@ -81,7 +81,8 @@ int	shell_execute(t_shell *self, char *input)
 	add_history(input);
 	free(input);
 	token_destroy(tokens);
-	return (0);
+	if (access(SHELL_TMP, F_OK) == 0)
+		unlink(SHELL_TMP);
 }
 
 void	shell_init(t_shell *self, char **envp)

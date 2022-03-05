@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/05 10:35:41 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 16:41:29 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,10 +236,10 @@ void				shell_init(t_shell *self, char **envp);
 int					shell_pipe(t_node *command);
 int					shell_redirection(t_node *command);
 int					shell_command(t_node *command);
-int					shell_execute(t_shell *self, char *input);
 int					shell_builtin(int argc, char **argv);
 int					shell_bin(char **argv);
 int					shell_start(t_shell *self);
+void				shell_execute(t_shell *self, char *input);
 
 // INTEPRETER
 char				**expander_eval(t_node *node);
