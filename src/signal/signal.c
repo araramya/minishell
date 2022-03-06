@@ -1,29 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/19 19:22:43 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 16:35:14 by araramya         ###   ########.fr       */
+/*   Created: 2022/03/06 16:19:12 by araramya          #+#    #+#             */
+/*   Updated: 2022/03/06 16:33:55 by araramya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief Main function.
- * 
- * @return int 
- */
-int	main(int argc, char **argv, char **envp)
+void 				signal_shell(void)
 {
-	t_shell	shell;
+    signal(SIGINT, signal_interupt);
+    signal(SIGQUIT, signal_do_nothing);
+}
 
-	shell_init(&shell, envp);
-	if (argc > 2 && ft_strcmp(argv[1], "-c") == 0)
-		return (shell_execute(&shell, ft_strdup(argv[2])));
-	signal_shell();
-	return (shell_start(&shell));
+void				signal_default(void)
+{
+    signal(SIGINT, SIG_DFL);
+    signal(SIGQUIT, SIG_DFL);
+}
+void				signal_ignore(void)
+{
+    signal(SIGINT, SIG_IGN);
+    signal(SIGQUIT, SIG_IGN);    
+}
+
+void				signal_heredoc(void)
+{
+    signal(SIGINT, signal_interupt);
+    signal(SIGQUIT, signal_do_nothing);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 14:10:52 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/06 15:42:08 by araramya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,16 @@ int	shell_execute(t_shell *self, char *input)
 	char	*temp;
 	int		code;
 
+	if (ft_strlen(input) == 0)
+		return (0);
+	code = 0;
 	lexer_init(&self->lexer, input, false);
 	tokens = lexer_lex(&self->lexer);
 	if (tokens && !self->lexer.error)
 	{
 		node = parser_parse(&self->parser, tokens);
+		if (!node)
+			return (0);
 		code = shell_command(node);
 		temp = ft_itoa(code);
 		env_set("?", temp);

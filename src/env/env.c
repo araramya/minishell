@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:34:13 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 19:52:47 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/06 15:58:21 by araramya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ char	*env_get(char *key)
 {
 	size_t	bucket;
 	t_env	*entry;
-	char	*temp;
 
 	bucket = env_hash(key);
 	entry = g_env[bucket];
@@ -80,12 +79,6 @@ char	*env_get(char *key)
 		if (ft_strcmp(entry->key, key) == 0)
 			return (entry->value);
 		entry = entry->next;
-	}
-	temp = getenv(key);
-	if (temp)
-	{
-		env_set(key, temp);
-		return (temp);
 	}
 	return (NULL);
 }

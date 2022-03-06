@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:45:09 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 14:13:21 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/06 15:41:17 by araramya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ t_node	*parser_command_line(t_parser *self)
 	t_node	*command;
 
 	command = parser_pipe(self);
+	if (!command)
+		return (NULL);
 	if (parser_match2(self, T_SEMICOLON) != NULL)
 		command->next = parser_command_line(self);
 	return (command);
@@ -69,13 +71,17 @@ t_node	*parser_redirection(t_parser *self)
 	t_node	*command;
 	t_token	*check;
 	t_node	*temp;
+	t_redirect_kind temp_kind;
 
+	temp_kind = R_NONE;
 	command = parser_simple_command(self);
+	if (!command)
+		return (NULL);
 	check = parser_match2(self, T_LESS | T_GREAT | T_DOUBLE_GREAT);
 	while (check)
 	{
 		temp = command;
-		if ((command->kind & NODE_REDIRECTION) != 0)
+		if ((command->kind & NODE_REDIRECTION) != 0 && temp_kind == command->redirect_kind)
 		{
 			if (command->rhs)
 				node_destroy(command->rhs);
@@ -87,6 +93,7 @@ t_node	*parser_redirection(t_parser *self)
 		}
 		command->rhs = parser_word(self);
 		command->redirect_kind = token_kind_to_redirect_kind(check->kind);
+		temp_kind = command->redirect_kind;
 		check = parser_match2(self, T_LESS | T_GREAT | T_DOUBLE_GREAT);
 	}
 	return (command);
