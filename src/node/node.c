@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 20:34:11 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/01 18:46:10 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 19:25:39 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,10 @@ t_node	*node_create(t_node_kind kind)
 	node->rhs = NULL;
 	node->next = NULL;
 	node->arguments = NULL;
-	node->target = NULL;
-	node->pipe = NULL;
 	node->in_quote = NULL;
 	node->value = NULL;
 	node->merged = NULL;
+	node->redirect_kind = R_NONE;
 	return (node);
 }
 
@@ -84,14 +83,14 @@ void	node_destroy(t_node *self)
 		node_destroy(self->next);
 	if (self->in_quote != NULL)
 		node_destroy(self->in_quote);
-	if (self->pipe != NULL)
-		node_destroy(self->pipe);
-	if (self->target != NULL)
-		node_destroy(self->target);
 	if (self->value != NULL)
 		free(self->value);
 	if (self->merged != NULL)
 		node_destroy(self->merged);
+	if (self->lhs != NULL)
+		node_destroy(self->lhs);
+	if (self->rhs != NULL)
+		node_destroy(self->rhs);
 	free(self);
 }
 

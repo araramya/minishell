@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 22:35:21 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/03 22:35:24 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/06 13:04:26 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,14 @@ t_token	*parser_notmatch(t_parser *self, t_token_kind kind)
 	if (!parser_check(self, kind))
 		return (parser_advance(self));
 	return (NULL);
+}
+
+void	parser_init(t_parser *self, t_token *tokens)
+{
+	self->tokens = tokens;
+	self->current = tokens;
+	self->error = false;
+	self->in_quote = false;
+	self->heredoc = false;
+	self->index = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/05 16:41:16 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/06 14:10:52 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,19 @@ int	shell_command(t_node *command)
 	int		argc;
 	int		code;
 
-	if (command->pipe)
-		return (shell_pipe(command));
-	if (command->target)
-		return (shell_redirection(command));
-	argv = expander_eval(command->arguments);
-	argc = argument_size(argv);
-	code = shell_builtin(argc, argv);
-	argument_destroy(argv);
+	if ((command->kind & NODE_PIPE) != 0)
+		code = shell_pipe(command);
+	else if ((command->kind & NODE_REDIRECTION) != 0)
+		code = shell_redirection(command);
+	else
+	{
+		argv = expander_eval(command->arguments);
+		argc = argument_size(argv);
+		code = shell_builtin(argc, argv);
+		argument_destroy(argv);
+	}
 	if (command->next)
-		return (shell_command(command->next));
+		code = shell_command(command->next);
 	return (code);
 }
 
@@ -58,31 +61,28 @@ int	shell_command(t_node *command)
  * @param self 
  * @param input 
  */
-void	shell_execute(t_shell *self, char *input)
+int	shell_execute(t_shell *self, char *input)
 {
 	t_token	*tokens;
 	t_node	*node;
 	char	*temp;
 	int		code;
 
-	tokens = lexer_lex(&self->lexer, input);
+	lexer_init(&self->lexer, input, false);
+	tokens = lexer_lex(&self->lexer);
 	if (tokens && !self->lexer.error)
 	{
 		node = parser_parse(&self->parser, tokens);
-		if (node && (node->kind & NODE_COMMAND) != 0)
-		{
-			code = shell_command(node);
-			temp = ft_itoa(code);
-			env_set("?", temp);
-			free(temp);
-		}
+		code = shell_command(node);
+		temp = ft_itoa(code);
+		env_set("?", temp);
+		free(temp);
 		node_destroy(node);
 	}
 	add_history(input);
 	free(input);
 	token_destroy(tokens);
-	if (access(SHELL_TMP, F_OK) == 0)
-		unlink(SHELL_TMP);
+	return (code);
 }
 
 void	shell_init(t_shell *self, char **envp)

@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 19:20:42 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/04 19:25:12 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/05 19:16:48 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,36 +24,25 @@ static void	shell_dup2(int pfd[2], int fd, int fd2)
 	shell_close_pfd(pfd);
 }
 
-static void	shell_destroy_and_exit(char **argv, int code)
-{
-	argument_destroy(argv);
-	exit(code);
-}
-
 int	shell_pipe(t_node *command)
 {
-	int		pfd[2];
-	int		code;
-	char	**argv;
-	int		argc;
+	int	pfd[2];
+	int	code;
 
 	if (pipe(pfd) == -1)
 		return (1);
-	argv = expander_eval(command->arguments);
-	argc = argument_size(argv);
 	if (fork() == 0)
 	{
 		shell_dup2(pfd, pfd[1], STDOUT_FILENO);
-		shell_destroy_and_exit(argv, shell_builtin(argc, argv));
+		exit(shell_command(command->lhs));
 	}
 	wait(&code);
 	if (fork() == 0)
 	{
 		shell_dup2(pfd, pfd[0], STDIN_FILENO);
-		shell_destroy_and_exit(argv, shell_command(command->pipe));
+		exit(shell_command(command->rhs));
 	}
 	shell_close_pfd(pfd);
 	wait(&code);
-	argument_destroy(argv);
 	return (code);
 }

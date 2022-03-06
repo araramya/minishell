@@ -19,11 +19,11 @@ A todo list from the subject.
   - [x] exit with no options
 - [x] ’ inhibit all interpretation of a sequence of characters.
 - [x] " inhibit all interpretation of a sequence of characters except for $.
-- [ ] Redirections
-  - [ ] < should redirect input.
-  - [ ] > should redirect output.
-  - [ ] “<<” read input from the current source until a line containing only the delimiter is seen. it doesn’t need to update history!
-  - [ ] “>>” should redirect output with append mode.
+- [x] Redirections
+  - [x] < should redirect input.
+  - [x] > should redirect output.
+  - [x] “<<” read input from the current source until a line containing only the delimiter is seen. it doesn’t need to update history!
+  - [x] “>>” should redirect output with append mode.
 - [x] Pipes | The output of each command in the pipeline is connected via a pipe to the input of the next command.
 - [x] Environment variables ($ followed by characters) should expand to their values.
 - [x] $? should expand to the exit status of the most recently executed foreground

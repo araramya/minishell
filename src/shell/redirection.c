@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 21:10:34 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/05 17:09:25 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/06 13:08:53 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,20 @@ static int	shell_get_fd(t_redirect_kind kind)
 int	shell_redirection(t_node *command)
 {
 	char	*tfile;
-	char	**argv;
-	int		argc;
 	int		code;
 	int		fd;
 
-	tfile = expander_word(command->target);
-	argv = expander_eval(command->arguments);
-	argc = argument_size(argv);
+	tfile = expander_word(command->rhs);
 	if (fork() == 0)
 	{
 		fd = open(tfile, shell_get_flag(command->redirect_kind), 0755);
 		dup2(fd, shell_get_fd(command->redirect_kind));
 		close(fd);
-		code = shell_builtin(argc, argv);
-		argument_destroy(argv);
-		free(tfile);
-		exit(code);
+		exit(shell_command(command->lhs));
 	}
 	wait(&code);
-	argument_destroy(argv);
+	if (ft_strncmp(tfile, SHELL_TMP, ft_strlen(SHELL_TMP)) == 0)
+		unlink(tfile);
 	free(tfile);
 	return (code);
 }

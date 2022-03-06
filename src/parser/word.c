@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 00:32:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/05 17:03:19 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/06 13:25:59 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ t_node	*parser_quoted(t_parser *self)
 
 static t_token	*parser_get_word(t_parser *self)
 {
-	if (self->heredoc)
-		return (parser_notmatch(self, T_EOF));
 	if (self->in_quote)
 		return (parser_notmatch(self, T_DOUBLE_QUOTE | T_SEMICOLON | T_EOF));
+	if (self->heredoc)
+		return (parser_notmatch(self, T_EOF));
 	return (parser_match(self, T_EOF | T_WORD | T_WHITESPACE));
 }
 
@@ -68,11 +68,7 @@ t_node	*parser_simple_word(t_parser *self)
 	if (!word || word->kind == T_EOF)
 	{
 		if (is_env)
-		{
-			result = node_create(NODE_WORD);
-			result->value = ft_strdup("$");
-			return (result);
-		}
+			return (node_create_value(NODE_WORD, "$"));
 		return (NULL);
 	}
 	if (is_env)
@@ -99,6 +95,8 @@ t_node	*parser_word(t_parser *self)
 {
 	t_node	*temp;
 
+	if (parser_match2(self, T_DOUBLE_LESS))
+		return (parser_heredoc(self));
 	if (parser_match2(self, T_DOUBLE_QUOTE))
 		temp = parser_quoted(self);
 	else
