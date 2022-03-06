@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 16:28:01 by araramya         ###   ########.fr       */
+/*   Updated: 2022/03/06 18:18:58 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stddef.h>
 # include <stdint.h>
 # include <stdio.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <termios.h>
@@ -178,6 +178,7 @@ void				node_print_value(char *name, char *value, int indent);
 // PASER
 typedef struct s_parser
 {
+	int				heredoc_exit;
 	bool			error;
 	bool			in_quote;
 	bool			heredoc;
@@ -268,12 +269,11 @@ int					builtin_pwd(void);
 char				**shell_realpaths(const char *path);
 char				*utils_get_tmp_path(void);
 
-
 // SIGNALS
 void				signal_do_nothing(int sig);
 void				signal_reprompt(int sig);
 void				signal_interupt(int sig);
-void 				signal_shell(void);
+void				signal_shell(void);
 void				signal_default(void);
 void				signal_ignore(void);
 void				signal_heredoc(void);

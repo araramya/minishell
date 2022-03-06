@@ -3,29 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aabajyan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 23:42:58 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 13:46:45 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/06 18:19:32 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*parser_obtain_heredoc(t_parser *self)
+static char	*parser_obtain_heredoc(char *identifer)
 {
 	t_string	heredoc;
 	char		*input;
-	char		*string;
 
-	string = parser_get_identifer(self);
-	if (!string)
-		return (NULL);
 	string_init(&heredoc);
+	signal_heredoc();
 	while (true)
 	{
 		input = readline("> ");
-		if (!input || ft_strcmp(input, string) == 0)
+		if (!input || ft_strcmp(input, identifer) == 0)
 		{
 			if (input)
 				free(input);
@@ -36,7 +33,6 @@ static char	*parser_obtain_heredoc(t_parser *self)
 		string_move(&heredoc, input);
 		string_push(&heredoc, "\n");
 	}
-	free(string);
 	return (string_freeze(&heredoc));
 }
 
@@ -77,26 +73,39 @@ static t_node	*parser_heredoc_node(char *heredoc)
 	return (nodes);
 }
 
-t_node	*parser_heredoc(t_parser *self)
+static void	parser_handle_heredoc(t_parser *self, char *tmpfile)
 {
 	char	*heredoc;
+	char	*identifer;
+
+	identifer = parser_get_identifer(self);
+	if (!identifer)
+		return ;
+	if (fork() == 0)
+	{
+		heredoc = parser_obtain_heredoc(identifer);
+		if (!heredoc)
+			exit(1);
+		parser_write_to_tmp(parser_heredoc_node(heredoc), tmpfile);
+		free(identifer);
+		exit(0);
+	}
+	wait(&self->heredoc_exit);
+	free(identifer);
+}
+
+t_node	*parser_heredoc(t_parser *self)
+{
 	char	*tmpfile;
 	t_node	*result;
 
-	heredoc = parser_obtain_heredoc(self);
-	if (!heredoc)
-		return (NULL);
 	tmpfile = utils_get_tmp_path();
+	parser_handle_heredoc(self, tmpfile);
 	if (!tmpfile)
-	{
-		free(heredoc);
 		return (NULL);
-	}
 	result = node_create(NODE_REDIRECTION);
 	result->redirect_kind = R_LEFT;
 	result->rhs = node_create_value(NODE_WORD, tmpfile);
-	parser_write_to_tmp(parser_heredoc_node(heredoc), tmpfile);
 	free(tmpfile);
-	free(heredoc);
 	return (result);
 }

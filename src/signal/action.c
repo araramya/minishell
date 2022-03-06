@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 16:26:44 by araramya          #+#    #+#             */
-/*   Updated: 2022/03/06 16:32:07 by araramya         ###   ########.fr       */
+/*   Updated: 2022/03/06 18:35:04 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void                singal_terminate_output(void)
+static void	singal_terminate_output(void)
 {
-    struct termios	settings;
+	struct termios	settings;
 
 	if (tcgetattr(0, &settings))
 		perror("tcsetattr");
@@ -23,26 +23,25 @@ static void                singal_terminate_output(void)
 		perror("tcsetattr");
 }
 
-void				signal_do_nothing(int sig)
+void	signal_do_nothing(int sig)
 {
-    (void)sig;
-    singal_terminate_output();
-    rl_on_new_line();
-    rl_redisplay();
+	(void)sig;
+	singal_terminate_output();
+	rl_on_new_line();
+	rl_redisplay();
 }
 
-void				signal_reprompt(int sig)
+void	signal_reprompt(int sig)
 {
-    (void)sig;
-    singal_terminate_output();
-    write(1, "\n", 1);
-    rl_on_new_line(); 
-    rl_replace_line("", 0);
-    rl_redisplay();
+	(void)sig;
+	singal_terminate_output();
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
-void				signal_interupt(int sig)
+void	signal_interupt(int sig)
 {
-    signal_do_nothing(sig);
-    exit(1);
+	exit(sig);
 }

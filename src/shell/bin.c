@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bin.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 20:39:24 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 15:59:42 by araramya         ###   ########.fr       */
+/*   Updated: 2022/03/06 17:18:33 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	shell_bin(char **argv)
 	envp = env_to_string();
 	if (fork() == 0)
 	{
+		signal_default();
 		execve(path, argv, envp);
 		perror("execvp failed");
 		exit(1);

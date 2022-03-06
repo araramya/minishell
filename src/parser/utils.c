@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aabajyan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 22:35:21 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 13:04:26 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/06 18:19:17 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,5 @@ void	parser_init(t_parser *self, t_token *tokens)
 	self->in_quote = false;
 	self->heredoc = false;
 	self->index = 0;
+	self->heredoc_exit = 0;
 }

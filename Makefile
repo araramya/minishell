@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+         #
+#    By: aabajyan <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/19 19:22:34 by aabajyan          #+#    #+#              #
-#    Updated: 2022/02/19 19:47:08 by aabajyan         ###   ########.fr        #
+#    Updated: 2022/03/06 18:42:48 by aabajyan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,13 @@ NAME = minishell
 CC = gcc
 SRCS = $(wildcard src/**/*.c) $(wildcard src/*.c)
 OBJS = $(SRCS:src/%.c=obj/%.o)
-CFLAGS = -Wall -Wextra -Werror -g -O0 -I./src
+CFLAGS = -Wall -Wextra -Werror -g -O0 -I./src 
 LDFLAGS = $(CFLAGS) -lreadline
+
+ifeq ($(shell uname -s), Darwin)
+	CFLAGS += -I ~/.brew/opt/readline/include
+	LDFLAGS += -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
+endif
 
 obj/%.o: src/%.c
 	@mkdir -p $(dir $@)

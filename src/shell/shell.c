@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 15:42:08 by araramya         ###   ########.fr       */
+/*   Updated: 2022/03/06 18:38:30 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	shell_execute(t_shell *self, char *input)
 	if (tokens && !self->lexer.error)
 	{
 		node = parser_parse(&self->parser, tokens);
-		if (!node)
+		if (!node || self->parser.heredoc_exit != 0)
 			return (0);
 		code = shell_command(node);
 		temp = ft_itoa(code);
@@ -84,7 +84,6 @@ int	shell_execute(t_shell *self, char *input)
 		free(temp);
 		node_destroy(node);
 	}
-	add_history(input);
 	free(input);
 	token_destroy(tokens);
 	return (code);
@@ -120,7 +119,11 @@ int	shell_start(t_shell *self)
 			printf("\n");
 			break ;
 		}
+		if (ft_strlen(input) > 0)
+			add_history(input);
+		signal_ignore();
 		shell_execute(self, input);
+		signal_shell();
 	}
 	env_deinit();
 	return (0);
