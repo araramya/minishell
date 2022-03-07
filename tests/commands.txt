@@ -1,3 +1,8 @@
+exit;
+exit 42;
+exit -36;
+expr $? + $?;
+ls djasdjasjdsjadjas;
 echo test     \    test
 echo \"test
 echo $TEST
