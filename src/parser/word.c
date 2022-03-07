@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 00:32:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/07 21:09:52 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/07 22:27:01 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_node	*parser_quoted(t_parser *self)
 static t_token	*parser_get_word(t_parser *self)
 {
 	if (self->in_quote)
-		return (parser_notmatch(self, T_DOUBLE_QUOTE | T_SEMICOLON | T_EOF));
+		return (parser_notmatch(self, T_DOUBLE_QUOTE | T_EOF));
 	if (self->heredoc)
 		return (parser_notmatch(self, T_EOF));
 	return (parser_match(self, T_EOF | T_WORD | T_WHITESPACE));
