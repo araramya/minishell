@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/07 21:05:46 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/07 22:04:48 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,7 @@ int					shell_execute(t_shell *self, char *input);
 // INTEPRETER
 char				**expander_eval(t_node *node);
 char				*expander_quoted(t_node *node);
+char				*expander_simple_word(t_node *node);
 char				*expander_word(t_node *node);
 char				*expander_merge(t_string *temp, t_node *node);
 char				*expander_node(t_node *node);
