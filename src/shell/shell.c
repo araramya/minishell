@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/07 18:41:19 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/07 22:14:45 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ int	shell_execute(t_shell *self, char *input)
 	temp = ft_itoa(code);
 	env_set("?", temp);
 	free(temp);
-	free(input);
 	token_destroy(tokens);
 	return (code);
 }
@@ -136,6 +135,7 @@ int	shell_start(t_shell *self)
 		signal_ignore();
 		shell_execute(self, input);
 		signal_shell();
+		free(input);
 	}
 	env_deinit();
 	return (0);
