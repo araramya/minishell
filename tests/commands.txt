@@ -16,6 +16,7 @@ echo "$?TEST"
 echo $TEST $TEST
 echo "$1TEST"
 echo "$T1TEST"
+echo ""$TEST""
 ech\o "'$TEST'"
 echo "cat lol.c | cat > lol.c"
 echo '$TEST';

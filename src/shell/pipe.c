@@ -6,24 +6,42 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 19:20:42 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/05 19:16:48 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/07 13:15:12 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Close pipe file descriptors
+ * 
+ * @param pfd 
+ */
 static void	shell_close_pfd(int pfd[2])
 {
 	close(pfd[0]);
 	close(pfd[1]);
 }
 
+/**
+ * @brief manage file descriptors for pipe
+ * 
+ * @param pfd 
+ * @param fd 
+ * @param fd2 
+ */
 static void	shell_dup2(int pfd[2], int fd, int fd2)
 {
 	dup2(fd, fd2);
 	shell_close_pfd(pfd);
 }
 
+/**
+ * @brief Handle pipe node
+ * 
+ * @param command 
+ * @return int 
+ */
 int	shell_pipe(t_node *command)
 {
 	int	pfd[2];

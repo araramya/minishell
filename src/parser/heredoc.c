@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 23:42:58 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 18:19:32 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/07 20:36:44 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+#define FORMAT "warning: delimited by end-of-file (wanted '%s')\n"
 
 static char	*parser_obtain_heredoc(char *identifer)
 {
@@ -27,14 +29,17 @@ static char	*parser_obtain_heredoc(char *identifer)
 			if (input)
 				free(input);
 			else
-				printf("\n");
+				printf(FORMAT, identifer);
 			break ;
 		}
 		string_move(&heredoc, input);
 		string_push(&heredoc, "\n");
 	}
+	signal_ignore();
 	return (string_freeze(&heredoc));
 }
+
+#undef FORMAT
 
 static bool	parser_write_to_tmp(t_node *result, char *tmpfile)
 {
@@ -46,10 +51,7 @@ static bool	parser_write_to_tmp(t_node *result, char *tmpfile)
 		return (false);
 	expanded = expander_word(result);
 	if (!expanded)
-	{
-		close(fd);
-		return (false);
-	}
+		expanded = ft_strdup("");
 	write(fd, expanded, ft_strlen(expanded));
 	close(fd);
 	free(expanded);
@@ -73,25 +75,26 @@ static t_node	*parser_heredoc_node(char *heredoc)
 	return (nodes);
 }
 
-static void	parser_handle_heredoc(t_parser *self, char *tmpfile)
+static bool	parser_handle_heredoc(t_parser *self, char *tmpfile)
 {
 	char	*heredoc;
 	char	*identifer;
+	int		code;
 
 	identifer = parser_get_identifer(self);
 	if (!identifer)
-		return ;
+		return (false);
 	if (fork() == 0)
 	{
 		heredoc = parser_obtain_heredoc(identifer);
-		if (!heredoc)
-			exit(1);
 		parser_write_to_tmp(parser_heredoc_node(heredoc), tmpfile);
 		free(identifer);
 		exit(0);
 	}
-	wait(&self->heredoc_exit);
+	wait(&code);
+	self->heredoc_exit = WEXITSTATUS(code);
 	free(identifer);
+	return (true);
 }
 
 t_node	*parser_heredoc(t_parser *self)
@@ -99,8 +102,14 @@ t_node	*parser_heredoc(t_parser *self)
 	char	*tmpfile;
 	t_node	*result;
 
+	if (self->heredoc_exit == 2)
+		return (NULL);
 	tmpfile = utils_get_tmp_path();
-	parser_handle_heredoc(self, tmpfile);
+	if (!parser_handle_heredoc(self, tmpfile))
+	{
+		free(tmpfile);
+		return (parser_error(self, "Failed to obtain heredoc", NULL));
+	}
 	if (!tmpfile)
 		return (NULL);
 	result = node_create(NODE_REDIRECTION);

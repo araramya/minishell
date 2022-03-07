@@ -28,11 +28,11 @@ A todo list from the subject.
 - [x] Environment variables ($ followed by characters) should expand to their values.
 - [x] $? should expand to the exit status of the most recently executed foreground
       pipeline.
-- [ ] ctrl-C ctrl-D ctrl-\ should work like in bash.
+- [x] ctrl-C ctrl-D ctrl-\ should work like in bash.
 - When interactive:
-  - [ ] ctrl-C print a new prompt on a newline.
+  - [x] ctrl-C print a new prompt on a newline.
   - [x] ctrl-D exit the shell.
-  - [ ] ctrl-\ do nothing.
+  - [x] ctrl-\ do nothing.
 
 ## Checklist
 
@@ -125,6 +125,20 @@ This is very handy to check if everything is working as espected.
   - [ ] echo "$USER" should print the value of $USER
 
 No checklist for bonus, because we are not doing it :P
+
+## MacOS
+
+readline needs to be installed via homebrew. If you are using 42 school computer and don't have homebrew run:
+
+```sh
+curl -s https://brew.42.fr/ | bash
+```
+
+To install readline run:
+
+```sh
+brew install readline
+```
 
 ## Resources
 

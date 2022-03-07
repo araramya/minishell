@@ -3,15 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 18:38:30 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/07 18:41:19 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Handle builtins
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
 int	shell_builtin(int argc, char **argv)
 {
 	if (argc == 0)
@@ -33,6 +40,12 @@ int	shell_builtin(int argc, char **argv)
 	return (shell_bin(argv));
 }
 
+/**
+ * @brief Handle command node
+ * 
+ * @param command 
+ * @return int 
+ */
 int	shell_command(t_node *command)
 {
 	char	**argv;
@@ -70,20 +83,19 @@ int	shell_execute(t_shell *self, char *input)
 
 	if (ft_strlen(input) == 0)
 		return (0);
-	code = 0;
+	code = 2;
 	lexer_init(&self->lexer, input, false);
 	tokens = lexer_lex(&self->lexer);
 	if (tokens && !self->lexer.error)
 	{
 		node = parser_parse(&self->parser, tokens);
-		if (!node || self->parser.heredoc_exit != 0)
-			return (0);
-		code = shell_command(node);
-		temp = ft_itoa(code);
-		env_set("?", temp);
-		free(temp);
+		if (!self->parser.error && node && self->parser.heredoc_exit != 2)
+			code = shell_command(node);
 		node_destroy(node);
 	}
+	temp = ft_itoa(code);
+	env_set("?", temp);
+	free(temp);
 	free(input);
 	token_destroy(tokens);
 	return (code);

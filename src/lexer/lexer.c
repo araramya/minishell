@@ -6,11 +6,26 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:26:19 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/05 23:20:21 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/07 12:28:32 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static t_token	*lexer_error(t_lexer *lexer, const char *message, char peek)
+{
+	lexer->error = true;
+	ft_putstr_fd("Lexer error: ", 2);
+	ft_putstr_fd(message, 2);
+	if (peek)
+	{
+		ft_putstr_fd(" '", 2);
+		ft_putchar_fd(peek, 2);
+		ft_putchar_fd('\'', 2);
+	}
+	ft_putchar_fd('\n', 2);
+	return (NULL);
+}
 
 /**
  * @brief Lex single quotes.
@@ -34,11 +49,7 @@ t_token	*lexer_single_quote(t_lexer *self)
 		peek = lexer_peek(self, ++length);
 	self->cursor++;
 	if (peek != '\'')
-	{
-		printf(LEXER_ERROR_UNTERIMATED_STRING);
-		self->error = true;
-		return (NULL);
-	}
+		return (lexer_error(self, "Unterminated string", 0));
 	result = ft_substr(self->input, start, length);
 	return (token_create(T_WORD, result));
 }
@@ -71,6 +82,8 @@ t_token	*lexer_next(t_lexer *self)
 		return (lexer_until(self, T_WHITESPACE, ft_isspace));
 	if (ft_isalpha(peek))
 		return (lexer_until(self, T_WORD, ft_isalnum));
+	if (!self->in_quotes && ft_strchr("()[]", peek))
+		return (lexer_error(self, "unexpected token", peek));
 	return (token_create(T_WORD, char_to_string(peek)));
 }
 
@@ -106,10 +119,7 @@ t_token	*lexer_lex(t_lexer *self)
 		next = lexer_next(self);
 	}
 	if (self->in_quotes && !self->heredoc)
-	{
-		printf(LEXER_ERROR_UNTERIMATED_STRING);
-		self->error = true;
-	}
+		lexer_error(self, "Unterminated string", 0);
 	token_push(self->tokens, token_create(T_EOF, NULL));
 	return (self->tokens);
 }

@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 20:15:18 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/05 00:27:39 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/07 15:58:51 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ t_token	*parser_match(t_parser *self, t_token_kind kind)
 	return (NULL);
 }
 
-#define FORMAT "Parser error: Expected %s, but got %s at index %d.\n"
-
 /**
  * @brief Check if the current token is specific kind.
  * If so advance to the next token. Or else throw an error.
@@ -87,18 +85,15 @@ t_token	*parser_match(t_parser *self, t_token_kind kind)
  */
 t_token	*parser_consume(t_parser *self, t_token_kind kind)
 {
-	const char	*expected;
-	const char	*actual;
-
 	if (self->error)
 		return (NULL);
 	if (parser_check(self, kind) != NULL)
 		return (parser_advance(self));
-	expected = token_kind_to_string(kind);
-	actual = token_kind_to_string(self->current->kind);
-	printf(FORMAT, expected, actual, self->index);
+	ft_putstr_fd("Parser error: Expected ", 2);
+	ft_putstr_fd(token_kind_to_string(kind), 2);
+	ft_putstr_fd(", but got ", 2);
+	ft_putstr_fd(token_kind_to_string(self->current->kind), 2);
+	ft_putstr_fd(".\n", 2);
 	self->error = true;
 	return (NULL);
 }
-
-#undef FORMAT

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bin.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 20:39:24 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 17:18:33 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/07 12:30:29 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int	shell_bin(char **argv)
 	path = shell_find_bin(argv[0]);
 	if (!path)
 	{
-		printf("Command '%s' not found\n", argv[0]);
+		ft_putstr_fd(argv[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
 		return (1);
 	}
 	envp = env_to_string();
@@ -72,5 +73,5 @@ int	shell_bin(char **argv)
 	wait(&code);
 	free(path);
 	argument_destroy(envp);
-	return (code);
+	return (WEXITSTATUS(code));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 18:18:58 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/07 21:05:46 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,18 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stddef.h>
 # include <stdint.h>
 # include <stdio.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <stdlib.h>
+# include <string.h>
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-# include <string.h>
 
 # define SHELL_TMP "/tmp/minishell"
 
@@ -46,7 +46,7 @@ char				*ft_strchr(const char *str, int c);
 long				ft_atoi(const char *str);
 char				*ft_itoa(int value);
 char				**ft_split(char const *s, char c);
-void				ft_putstr_fd(char *s, int fd);
+void				ft_putstr_fd(const char *s, int fd);
 void				ft_putchar_fd(char c, int fd);
 int					ft_isdigit(int c);
 int					ft_isalpha(int c);
@@ -101,8 +101,6 @@ void				token_destroy(t_token *self);
 void				token_print(t_token *self);
 
 // LEXER
-# define LEXER_ERROR_UNTERIMATED_STRING "Lexer Error: Unterminated string\n"
-
 typedef struct s_lexer
 {
 	t_token			*tokens;
@@ -191,12 +189,13 @@ void				parser_init(t_parser *self, t_token *tokens);
 t_node				*parser_parse(t_parser *self, t_token *tokens);
 t_token				*parser_advance(t_parser *self);
 t_token				*parser_check(t_parser *self, t_token_kind kind);
+t_token				*parser_check2(t_parser *self, t_token_kind kind);
 t_token				*parser_match(t_parser *self, t_token_kind kind);
 t_token				*parser_notmatch(t_parser *self, t_token_kind kind);
 t_token				*parser_match2(t_parser *self, t_token_kind kind);
 t_token				*parser_consume(t_parser *self, t_token_kind kind);
 t_node				*parser_command_line(t_parser *self);
-t_node				*parser_redirection(t_parser *self);
+t_node				*parser_redirection(t_parser *self, t_token_kind kind);
 t_node				*parser_pipe(t_parser *self);
 t_node				*parser_heredoc(t_parser *self);
 t_node				*parser_quoted(t_parser *self);
@@ -206,6 +205,7 @@ t_node				*parser_simple_word(t_parser *self);
 t_node				*parser_multiline(t_parser *self);
 char				*parser_join_values(t_node *node);
 char				*parser_get_identifer(t_parser *self);
+t_node				*parser_error(t_parser *self, char *message, t_node *node);
 
 // ENV
 # define TABLE_SIZE 1000
@@ -250,6 +250,7 @@ int					shell_execute(t_shell *self, char *input);
 char				**expander_eval(t_node *node);
 char				*expander_quoted(t_node *node);
 char				*expander_word(t_node *node);
+char				*expander_merge(t_string *temp, t_node *node);
 char				*expander_node(t_node *node);
 
 // ARGUMENTS

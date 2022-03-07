@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:45:09 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 15:41:17 by araramya         ###   ########.fr       */
+/*   Updated: 2022/03/07 21:00:58 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_node	*parser_pipe(t_parser *self)
 	t_node	*command;
 	t_node	*temp;
 
-	command = parser_redirection(self);
+	command = parser_simple_command(self);
 	if (!command)
 		return (NULL);
 	while (parser_match2(self, T_VERTICAL_BAR))
@@ -35,6 +35,8 @@ t_node	*parser_pipe(t_parser *self)
 		command->lhs = temp;
 		command->rhs = parser_command_line(self);
 	}
+	if ((command->kind & NODE_PIPE) != 0 && !command->rhs)
+		return (parser_error(self, "command expected", command));
 	return (command);
 }
 
@@ -66,47 +68,31 @@ t_node	*parser_command_line(t_parser *self)
  * @param self 
  * @return t_node* 
  */
-t_node	*parser_redirection(t_parser *self)
+t_node	*parser_redirection(t_parser *self, t_token_kind kind)
 {
-	t_node	*command;
-	t_token	*check;
-	t_node	*temp;
-	t_redirect_kind temp_kind;
+	t_node	*result;
+	int		check;
 
-	temp_kind = R_NONE;
-	command = parser_simple_command(self);
-	if (!command)
-		return (NULL);
-	check = parser_match2(self, T_LESS | T_GREAT | T_DOUBLE_GREAT);
-	while (check)
-	{
-		temp = command;
-		if ((command->kind & NODE_REDIRECTION) != 0 && temp_kind == command->redirect_kind)
-		{
-			if (command->rhs)
-				node_destroy(command->rhs);
-		}
-		else
-		{
-			command = node_create(NODE_REDIRECTION);
-			command->lhs = temp;
-		}
-		command->rhs = parser_word(self);
-		command->redirect_kind = token_kind_to_redirect_kind(check->kind);
-		temp_kind = command->redirect_kind;
-		check = parser_match2(self, T_LESS | T_GREAT | T_DOUBLE_GREAT);
-	}
-	return (command);
+	check = T_EOF | T_LESS | T_DOUBLE_LESS | T_GREAT | T_DOUBLE_GREAT;
+	if (parser_check2(self, check))
+		return (parser_error(self, "Unexpected token", NULL));
+	result = node_create(NODE_REDIRECTION);
+	result->redirect_kind = token_kind_to_redirect_kind(kind);
+	result->rhs = parser_word(self);
+	return (result);
 }
 
-static t_node	*parser_simple_command_return(t_node *heredoc, t_node *result)
+static t_node	*node_push_to_lhs(t_node *self, t_node *src)
 {
-	if (heredoc)
-	{
-		heredoc->lhs = result;
-		return (heredoc);
-	}
-	return (result);
+	t_node	*target;
+
+	if (!self)
+		return (src);
+	target = self;
+	while (target && target->lhs)
+		target = target->lhs;
+	target->lhs = src;
+	return (self);
 }
 
 /**
@@ -130,11 +116,7 @@ t_node	*parser_simple_command(t_parser *self)
 	while (temp)
 	{
 		if ((temp->kind & NODE_REDIRECTION) != 0)
-		{
-			if (heredoc)
-				node_destroy(heredoc);
-			heredoc = temp;
-		}
+			heredoc = node_push_to_lhs(heredoc, temp);
 		else
 			arguments = node_push(arguments, temp);
 		temp = parser_word(self);
@@ -143,5 +125,7 @@ t_node	*parser_simple_command(t_parser *self)
 		return (NULL);
 	result = node_create(NODE_COMMAND);
 	result->arguments = arguments;
-	return (parser_simple_command_return(heredoc, result));
+	if (heredoc)
+		return (node_push_to_lhs(heredoc, result));
+	return (result);
 }

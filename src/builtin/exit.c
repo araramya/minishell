@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabajyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:56:59 by araramya          #+#    #+#             */
-/*   Updated: 2022/03/06 18:53:46 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/07 12:31:59 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,13 @@ int	builtin_exit(int argc, char **argv)
 	{
 		if (!ft_check_exit_value(argv[1]))
 		{
-			printf("bash: exit:  Not numeric argument\n");
+			printf("minishell: exit:  Not numeric argument\n");
 			exit(255);
 		}
 		if (ft_atoi(argv[1]) > INT_MAX || ft_atoi(argv[1]) < INT_MIN)
 		{
-			printf("bash: exit: Not numeric argument\n");
+			printf("minishell: exit: Not numeric argument\n");
 			exit(255);
-		}
-		else if(argc > 2)
-		{
-			printf("bash: exit: Too many arguments\n");
-			return (0);
 		}
 		exit(ft_atoi(argv[1]));
 	}

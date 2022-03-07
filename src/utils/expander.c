@@ -42,6 +42,8 @@ static char	*expander_simple_word(t_node *node)
 	char		*temp;
 	t_string	string;
 
+	if (!node)
+		return (NULL);
 	if ((node->kind & NODE_VARIABLE) != 0)
 	{
 		if (!(ft_isalnum(node->value[0]) || node->value[0] == '?'))
@@ -61,28 +63,39 @@ static char	*expander_simple_word(t_node *node)
 	return (ft_strdup(node->value));
 }
 
-char	*expander_word(t_node *node)
+char	*expander_merge(t_string *temp, t_node *node)
 {
-	t_string	temp;
-	t_node		*merge;
-	char		*temp_value;
+	t_node	*merge;
+	char	*temp_value;
 
-	string_init(&temp);
-	temp_value = expander_simple_word(node);
-	string_push(&temp, temp_value);
-	free(temp_value);
+	if (!node)
+		return (string_freeze(temp));
 	merge = node->merged;
 	while (merge)
 	{
 		temp_value = expander_simple_word(merge);
 		if (temp_value)
 		{
-			string_push(&temp, temp_value);
+			string_push(temp, temp_value);
 			free(temp_value);
 		}
 		merge = merge->merged;
 	}
-	return (string_freeze(&temp));
+	return (string_freeze(temp));
+}
+
+char	*expander_word(t_node *node)
+{
+	t_string	temp;
+	char		*temp_value;
+
+	if (!node)
+		return (NULL);
+	string_init(&temp);
+	temp_value = expander_simple_word(node);
+	string_push(&temp, temp_value);
+	free(temp_value);
+	return (expander_merge(&temp, node));
 }
 
 char	*expander_node(t_node *node)
@@ -108,5 +121,5 @@ char	*expander_quoted(t_node *node)
 		free(temp);
 		node = node->next;
 	}
-	return (string_freeze(&string));
+	return (expander_merge(&string, node));
 }
