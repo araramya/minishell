@@ -28,6 +28,17 @@ echo '$TEST';
 echo;
 echo ;
 echo -n Hello; echo -n ' '; echo $USER;
+echo -n -n -n test 42
+echo -n bonjour
+echo -nn bonjour
+echo -n -n -n bonjour
+echo -n -n -n bonjour
+echo "-n" bonjour
+echo -n"-n" bonjour
+echo "-nnnn" bonjour
+echo "-n -n -n"-n bonjour
+echo "-n '-n'" bonjour
+echo -n -n -n -nnnnn -n lol -nnnn
 pwd
 export TEST=LOL; echo $TEST
 cd dasdsadsad
