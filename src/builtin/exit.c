@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:56:59 by araramya          #+#    #+#             */
-/*   Updated: 2022/03/08 01:03:41 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/08 14:57:56 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int	builtin_exit(int argc, char **argv)
 		if (!exit_check(argv[1]) || value > INT_MAX || value < INT_MIN)
 		{
 			ft_putstr_fd("minishell: exit: Not numeric argument\n", 2);
-			return (2);
+			exit(2);
 		}
-		return (value);
+		exit(value);
 	}
 	return (0);
 }
