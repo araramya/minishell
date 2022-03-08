@@ -14,27 +14,25 @@
 
 char	**expander_eval(t_node *node)
 {
-	char	**result;
-	size_t	size;
-	size_t	i;
-	size_t	j;
+	t_list	*list;
 	char	*temp;
 
-	size = node_size(node);
-	if (size == 0)
-		return (NULL);
-	result = ft_calloc(size + 1, sizeof(char *));
-	i = 0;
-	j = 0;
-	while (i++ < size)
+	list = NULL;
+	while (node)
 	{
 		temp = expander_node(node);
 		if (temp)
-			result[j++] = temp;
+		{
+			if ((node->kind & NODE_VARIABLE) != 0)
+				list = expander_from_env(list, temp);
+			else
+				list = list_push(list, list_create(temp));
+		}
+		if (temp != NULL)
+			free(temp);
 		node = node->next;
 	}
-	result[j] = NULL;
-	return (result);
+	return (list_freeze(list));
 }
 
 char	*expander_simple_word(t_node *node)

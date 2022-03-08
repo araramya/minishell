@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/07 22:04:48 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/09 00:04:30 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,20 @@ int					string_push(t_string *self, const char *src);
 int					string_move(t_string *self, char *src);
 int					string_deinit(t_string *self);
 char				*string_freeze(t_string *self);
+
+// LIST
+typedef struct s_list
+{
+	char			*value;
+	struct s_list	*next;
+}					t_list;
+
+t_list				*list_create(char *value);
+t_list				*list_last(t_list *self);
+t_list				*list_push(t_list *self, t_list *src);
+size_t				list_size(t_list *self);
+char				**list_freeze(t_list *self);
+void				list_destroy(t_list *self);
 
 // TOKEN
 typedef enum e_token_kind
@@ -173,6 +187,7 @@ size_t				node_size(t_node *self);
 void				node_print_indent(int indent);
 void				node_print_children(t_node *node, char *name, int indent);
 void				node_print_value(char *name, char *value, int indent);
+
 // PASER
 typedef struct s_parser
 {
@@ -247,6 +262,7 @@ int					shell_start(t_shell *self);
 int					shell_execute(t_shell *self, char *input);
 
 // INTEPRETER
+t_list				*expander_from_env(t_list *list, char *env);
 char				**expander_eval(t_node *node);
 char				*expander_quoted(t_node *node);
 char				*expander_simple_word(t_node *node);
