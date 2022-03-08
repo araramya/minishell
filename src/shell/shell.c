@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/07 22:14:45 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/08 19:07:22 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	shell_command(t_node *command)
 		argv = expander_eval(command->arguments);
 		argc = argument_size(argv);
 		code = shell_builtin(argc, argv);
+		if (argv && argc > 0)
+			env_set("_", argv[argc - 1]);
 		argument_destroy(argv);
 	}
 	if (command->next)

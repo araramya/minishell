@@ -39,6 +39,7 @@ echo "-nnnn" bonjour
 echo "-n -n -n"-n bonjour
 echo "-n '-n'" bonjour
 echo -n -n -n -nnnnn -n lol -nnnn
+export _=LOL; echo $_
 pwd
 export TEST=LOL; echo $TEST
 cd dasdsadsad
