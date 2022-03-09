@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 20:39:24 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/09 00:09:05 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/09 22:44:01 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*shell_find_bin(char *f)
 	size_t	i;
 	char	*found;
 
-	if (!f)
+	if (!f || ft_strlen(f) == 0)
 		return (NULL);
 	if ((f[0] == '/' || f[0] == '.') && access(f, F_OK) == 0)
 		return (ft_strdup(f));
