@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 23:42:58 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/07 20:36:44 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/09 22:01:36 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*parser_obtain_heredoc(char *identifer)
 
 #undef FORMAT
 
-static bool	parser_write_to_tmp(t_node *result, char *tmpfile)
+static bool	parser_write_to_tmp(t_node *result, char *tmpfile, bool no_env)
 {
 	int		fd;
 	char	*expanded;
@@ -49,7 +49,7 @@ static bool	parser_write_to_tmp(t_node *result, char *tmpfile)
 	fd = open(tmpfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 		return (false);
-	expanded = expander_word(result);
+	expanded = expander_word(result, no_env);
 	if (!expanded)
 		expanded = ft_strdup("");
 	write(fd, expanded, ft_strlen(expanded));
@@ -80,14 +80,18 @@ static bool	parser_handle_heredoc(t_parser *self, char *tmpfile)
 	char	*heredoc;
 	char	*identifer;
 	int		code;
+	bool	no_env;
 
+	no_env = parser_check2(self, T_DOUBLE_QUOTE) != NULL;
 	identifer = parser_get_identifer(self);
 	if (!identifer)
 		return (false);
+	if (!no_env && ft_strchr(identifer, ' ') != NULL)
+		no_env = true;
 	if (fork() == 0)
 	{
 		heredoc = parser_obtain_heredoc(identifer);
-		parser_write_to_tmp(parser_heredoc_node(heredoc), tmpfile);
+		parser_write_to_tmp(parser_heredoc_node(heredoc), tmpfile, no_env);
 		free(identifer);
 		exit(0);
 	}

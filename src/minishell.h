@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/09 00:04:30 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/09 20:51:45 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,6 @@ t_node				*parser_simple_command(t_parser *self);
 t_node				*parser_word(t_parser *self);
 t_node				*parser_simple_word(t_parser *self);
 t_node				*parser_multiline(t_parser *self);
-char				*parser_join_values(t_node *node);
 char				*parser_get_identifer(t_parser *self);
 t_node				*parser_error(t_parser *self, char *message, t_node *node);
 
@@ -261,14 +260,14 @@ int					shell_bin(char **argv);
 int					shell_start(t_shell *self);
 int					shell_execute(t_shell *self, char *input);
 
-// INTEPRETER
+// EXPANDER
 t_list				*expander_from_env(t_list *list, char *env);
-char				**expander_eval(t_node *node);
-char				*expander_quoted(t_node *node);
-char				*expander_simple_word(t_node *node);
-char				*expander_word(t_node *node);
-char				*expander_merge(t_string *temp, t_node *node);
-char				*expander_node(t_node *node);
+char				**expander_expand(t_node *node);
+char				*expander_quoted(t_node *node, bool no_env);
+char				*expander_simple_word(t_node *node, bool no_env);
+char				*expander_word(t_node *node, bool no_env);
+char				*expander_merge(t_string *temp, t_node *node, bool no_env);
+char				*expander_node(t_node *node, bool no_env);
 
 // ARGUMENTS
 void				argument_print(char **arguments, char *prefix);

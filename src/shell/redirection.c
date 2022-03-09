@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 21:10:34 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/07 16:01:49 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/09 20:48:37 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	shell_redirection(t_node *command)
 	int		code;
 	int		fd;
 
-	tfile = expander_word(command->rhs);
+	tfile = expander_word(command->rhs, false);
 	if (!tfile)
 		return (1);
 	if (fork() == 0)

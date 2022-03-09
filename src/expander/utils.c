@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:04:07 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/09 00:05:21 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/09 20:49:58 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_list	*expander_from_env(t_list *list, char *env)
 	return (list);
 }
 
-char	*expander_merge(t_string *temp, t_node *node)
+char	*expander_merge(t_string *temp, t_node *node, bool no_env)
 {
 	t_node	*merge;
 	char	*temp_value;
@@ -38,7 +38,7 @@ char	*expander_merge(t_string *temp, t_node *node)
 	merge = node->merged;
 	while (merge)
 	{
-		temp_value = expander_simple_word(merge);
+		temp_value = expander_simple_word(merge, no_env);
 		if (temp_value)
 		{
 			string_push(temp, temp_value);
