@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 00:32:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/07 22:27:01 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 18:06:04 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * @brief Parse a quoted string
  * 
- * quoted -> T_DOUBLE_QUOTE simple_word+ T_DOUBLE_QUOTE
+ * quoted -> T_QUOTE simple_word+ T_QUOTE
  * 
  * @param self 
  * @return t_node* 
@@ -27,7 +27,7 @@ t_node	*parser_quoted(t_parser *self)
 
 	self->in_quote = true;
 	in_quote = NULL;
-	while (parser_match(self, T_DOUBLE_QUOTE | T_EOF) == NULL)
+	while (parser_match(self, T_QUOTE | T_EOF) == NULL)
 		in_quote = node_push(in_quote, parser_simple_word(self));
 	self->in_quote = false;
 	result = node_create(NODE_QUOTED);
@@ -47,7 +47,7 @@ t_node	*parser_quoted(t_parser *self)
 static t_token	*parser_get_word(t_parser *self)
 {
 	if (self->in_quote)
-		return (parser_notmatch(self, T_DOUBLE_QUOTE | T_EOF));
+		return (parser_notmatch(self, T_QUOTE | T_EOF));
 	if (self->heredoc)
 		return (parser_notmatch(self, T_EOF));
 	return (parser_match(self, T_EOF | T_WORD | T_WHITESPACE));
@@ -63,19 +63,21 @@ static t_token	*parser_get_word(t_parser *self)
  */
 t_node	*parser_simple_word(t_parser *self)
 {
-	bool	is_env;
 	t_token	*word;
 	t_node	*result;
 
-	is_env = (parser_match(self, T_DOLLAR_SIGN) != NULL);
+	self->is_env = (parser_match(self, T_DOLLAR_SIGN) != NULL);
 	word = parser_get_word(self);
 	if (!word || word->kind == T_EOF)
 	{
-		if (is_env)
+		if (self->is_env && (self->in_quote || parser_check2(self,
+					T_EOF) != NULL))
 			return (node_create_value(NODE_WORD, "$"));
+		if (self->is_env && !self->in_quote)
+			return (node_create_value(NODE_WORD, ""));
 		return (NULL);
 	}
-	if (is_env)
+	if (self->is_env)
 		result = node_create(NODE_VARIABLE);
 	else
 		result = node_create(NODE_WORD);
@@ -105,13 +107,13 @@ t_node	*parser_word(t_parser *self)
 	check = parser_match2(self, T_LESS | T_GREAT | T_DOUBLE_GREAT);
 	if (check)
 		return (parser_redirection(self, check->kind));
-	if (parser_match2(self, T_DOUBLE_QUOTE))
+	if (parser_match2(self, T_QUOTE))
 		temp = parser_quoted(self);
 	else
 		temp = parser_simple_word(self);
 	if (temp && (parser_check(self,
 				T_WORD) != NULL || (!self->in_quote && parser_check(self,
-					T_DOUBLE_QUOTE) != NULL)))
+					T_QUOTE) != NULL)))
 		temp->merged = parser_word(self);
 	return (temp);
 }

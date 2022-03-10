@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/10 15:19:31 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 17:54:40 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void				list_destroy(t_list *self);
 typedef enum e_token_kind
 {
 	T_BEGIN = 1 << 0,
-	T_DOUBLE_QUOTE = 1 << 1,
+	T_QUOTE = 1 << 1,
 	T_WHITESPACE = 1 << 2,
 	T_WORD = 1 << 3,
 	T_DOLLAR_SIGN = 1 << 4,
@@ -96,7 +96,7 @@ typedef enum e_token_kind
 	T_DOUBLE_GREAT = 1 << 8,
 	T_VERTICAL_BAR = 1 << 9,
 	T_SEMICOLON = 1 << 10,
-	T_EOF = 1 << 12
+	T_EOF = 1 << 11
 }					t_token_kind;
 
 const char			*token_kind_to_string(t_token_kind kind);
@@ -112,6 +112,7 @@ t_token				*token_create(t_token_kind kind, char *slice);
 t_token				*token_last(t_token *self);
 t_token				*token_push(t_token *self, t_token *src);
 t_token				*token_size(t_token *self);
+size_t				token_total_size(t_token *token);
 void				token_destroy(t_token *self);
 void				token_print(t_token *self);
 
@@ -184,7 +185,6 @@ t_node				*node_push(t_node *self, t_node *src);
 void				node_print(t_node *self, int indent);
 void				node_destroy(t_node *self);
 size_t				node_size(t_node *self);
-
 void				node_print_indent(int indent);
 void				node_print_children(t_node *node, char *name, int indent);
 void				node_print_value(char *name, char *value, int indent);
@@ -195,6 +195,7 @@ typedef struct s_parser
 	int				heredoc_exit;
 	bool			error;
 	bool			in_quote;
+	bool			is_env;
 	bool			heredoc;
 	t_token			*tokens;
 	t_token			*current;

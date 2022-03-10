@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 22:35:21 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/07 20:53:10 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 18:08:55 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,6 @@ t_token	*parser_check2(t_parser *self, t_token_kind kind)
 	return (parser_check(self, kind));
 }
 
-// t_token	*parser_notconsume(t_parser *self, t_token_kind kind)
-// {
-// 	if (self->error)
-// 		return (NULL);
-// 	while (parser_check(self, T_WHITESPACE))
-// 		parser_advance(self);
-// 	if (parser_check(self, kind) == NULL)
-// 		return (parser_advance(self));
-// 	ft_putstr_fd("Parser error: Unexpected token ", 2);
-// 	ft_putstr_fd(token_kind_to_string(self->current->kind), 2);
-// 	ft_putstr_fd(".\n", 2);
-// 	self->error = true;
-// 	return (NULL);
-// }
-
 /**
  * @brief Initialize a parser
  * 
@@ -74,6 +59,7 @@ void	parser_init(t_parser *self, t_token *tokens)
 	self->current = tokens;
 	self->error = false;
 	self->in_quote = false;
+	self->is_env = false;
 	self->heredoc = false;
 	self->index = 0;
 	self->heredoc_exit = 0;

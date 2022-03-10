@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 20:29:51 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/02/22 18:23:06 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 16:54:52 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_token	*token_push(t_token *self, t_token *src)
 		return (src);
 	last = token_last(self);
 	last->next = src;
-	return (last->next);
+	return (self);
 }
 
 /**

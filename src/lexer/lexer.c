@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:26:19 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/07 12:28:32 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 17:31:52 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,23 @@ t_token	*lexer_single_quote(t_lexer *self)
 {
 	int		start;
 	int		length;
-	char	*result;
+	char	*word;
 	char	peek;
+	t_token	*result;
 
 	if (self->in_quotes || self->heredoc)
 		return (token_create(T_WORD, ft_strdup("'")));
-	start = ++self->cursor;
-	length = 0;
+	result = token_create(T_QUOTE, ft_strdup("'"));
+	start = self->cursor + 1;
+	length = 1;
 	peek = lexer_peek(self, length);
 	while (peek != '\0' && peek != '\'')
 		peek = lexer_peek(self, ++length);
-	self->cursor++;
 	if (peek != '\'')
 		return (lexer_error(self, "Unterminated string", 0));
-	result = ft_substr(self->input, start, length);
-	return (token_create(T_WORD, result));
+	word = ft_substr(self->input, start, length - 1);
+	result = token_push(result, token_create(T_WORD, word));
+	return (token_push(result, token_create(T_QUOTE, ft_strdup("'"))));
 }
 
 /**
@@ -74,7 +76,7 @@ t_token	*lexer_next(t_lexer *self)
 	if (peek == '"')
 	{
 		self->in_quotes = !self->in_quotes;
-		return (token_create(T_DOUBLE_QUOTE, ft_strdup("\"")));
+		return (token_create(T_QUOTE, ft_strdup("\"")));
 	}
 	if (peek == '\'')
 		return (lexer_single_quote(self));
@@ -114,7 +116,7 @@ t_token	*lexer_lex(t_lexer *self)
 	while (next && self->error == false)
 	{
 		self->dollar_sign = (next->kind == T_DOLLAR_SIGN);
-		self->cursor += ft_strlen(next->slice);
+		self->cursor += token_total_size(next);
 		token_push(self->tokens, next);
 		next = lexer_next(self);
 	}

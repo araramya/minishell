@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 23:42:58 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/09 22:01:36 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 17:12:03 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static bool	parser_handle_heredoc(t_parser *self, char *tmpfile)
 	int		code;
 	bool	no_env;
 
-	no_env = parser_check2(self, T_DOUBLE_QUOTE) != NULL;
+	no_env = parser_check2(self, T_QUOTE) != NULL;
 	identifer = parser_get_identifer(self);
 	if (!identifer)
 		return (false);

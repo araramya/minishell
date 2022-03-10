@@ -15,6 +15,7 @@ echo    $TEST lol $TEST
 echo test "" test "" test
 echo "\$TEST"
 echo "$=TEST"
+echo $
 echo "$"
 echo "$?TEST"
 echo $TEST $TEST
@@ -24,8 +25,11 @@ echo ""$TEST""
 ech\o "'$TEST'"
 echo "cat lol.c | cat > lol.c"
 echo '$TEST';
+echo $"USER";
+echo $'USER';
 echo;
 echo ;
+e"ch"'o' $USER$USER;
 echo -n Hello; echo -n ' '; echo $USER;
 echo -n -n -n test 42
 echo -n bonjour
