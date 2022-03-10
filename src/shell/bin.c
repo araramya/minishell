@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 20:39:24 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/09 22:44:01 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 12:56:29 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	shell_bin(char **argv)
 		ft_putstr_fd(": command not found\n", 2);
 		return (127);
 	}
-	envp = env_to_string();
+	envp = env_to_string(false);
 	if (fork() == 0)
 	{
 		signal_default();

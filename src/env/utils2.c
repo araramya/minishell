@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 20:04:15 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 20:30:46 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 12:37:19 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,29 @@ int	env_from_string(char *string)
 	bool	code;
 
 	code = 0;
-	if (env_split(string, &a, &b))
+	b = NULL;
+	a = NULL;
+	if (ft_strchr(string, '=') == NULL)
+		a = ft_strdup(string);
+	else
+		env_split(string, &a, &b);
+	if (ft_strchr(a, ' '))
 	{
-		if (ft_strchr(a, ' '))
-		{
-			printf("export: '%s' is not a valid identifier\n", a);
-			code = 1;
-		}
-		else
-			env_set(a, b);
-		free(a);
-		free(b);
-		return (code);
+		printf("export: '%s' is not a valid identifier\n", a);
+		code = 1;
 	}
+	else
+		env_set(a, b);
+	if (a)
+		free(a);
+	if (b)
+		free(b);
 	return (code);
+}
+
+char	*env_value_or_null(char *value)
+{
+	if (value == NULL)
+		return (NULL);
+	return (ft_strdup(value));
 }

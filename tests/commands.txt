@@ -1,6 +1,7 @@
 exit;
 exit 42;
 exit -36;
+exit lol;
 echo test     \    test
 echo \"test
 echo $TEST

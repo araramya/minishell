@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:22:43 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/07 22:14:55 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 11:06:20 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@
  */
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell	shell;
-
-	shell_init(&shell, envp);
+	shell_init(envp);
 	if (argc > 2 && ft_strcmp(argv[1], "-c") == 0)
-		return (shell_execute(&shell, argv[2]));
+		return (shell_execute(argv[2]));
 	signal_shell();
-	return (shell_start(&shell));
+	return (shell_start());
 }

@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araramya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:34:13 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/06 15:58:21 by araramya         ###   ########.fr       */
+/*   Updated: 2022/03/10 12:37:51 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	**g_env = NULL;
-
-char	**env_to_string(void)
+char	**env_to_string(bool export_command)
 {
 	size_t	i;
 	size_t	j;
@@ -26,11 +24,11 @@ char	**env_to_string(void)
 	j = 0;
 	while (i < TABLE_SIZE)
 	{
-		entry = g_env[i++];
+		entry = g_shell.env[i++];
 		while (entry)
 		{
-			if (ft_strcmp("?", entry->key) != 0)
-				result[j++] = env_item_to_string(entry);
+			if (export_command || entry->value != NULL)
+				result[j++] = env_item_to_string(entry, export_command);
 			entry = entry->next;
 		}
 	}
@@ -45,12 +43,10 @@ void	env_set(char *key, char *value)
 	t_env	*prev;
 
 	bucket = env_hash(key);
-	entry = g_env[bucket];
-	if (value == NULL)
-		return (env_unset(&g_env, key));
+	entry = g_shell.env[bucket];
 	if (!entry)
 	{
-		g_env[bucket] = env_pair(key, value);
+		g_shell.env[bucket] = env_pair(key, value);
 		return ;
 	}
 	while (entry)
@@ -58,7 +54,7 @@ void	env_set(char *key, char *value)
 		if (ft_strcmp(entry->key, key) == 0)
 		{
 			free(entry->value);
-			entry->value = ft_strdup(value);
+			entry->value = env_value_or_null(value);
 			return ;
 		}
 		prev = entry;
@@ -72,8 +68,10 @@ char	*env_get(char *key)
 	size_t	bucket;
 	t_env	*entry;
 
+	if (ft_strcmp(key, "?") == 0)
+		return (g_shell.code);
 	bucket = env_hash(key);
-	entry = g_env[bucket];
+	entry = g_shell.env[bucket];
 	while (entry)
 	{
 		if (ft_strcmp(entry->key, key) == 0)
@@ -87,27 +85,27 @@ void	env_init(void)
 {
 	size_t	i;
 
-	if (g_env)
+	if (g_shell.env)
 		env_deinit();
-	g_env = malloc(TABLE_SIZE * sizeof(t_env));
+	g_shell.env = malloc(TABLE_SIZE * sizeof(t_env));
 	i = 0;
 	while (i < TABLE_SIZE)
-		g_env[i++] = NULL;
+		g_shell.env[i++] = NULL;
 }
 
 void	env_deinit(void)
 {
 	size_t	i;
 
-	if (!g_env)
+	if (!g_shell.env)
 		return ;
 	i = 0;
 	while (i < TABLE_SIZE)
 	{
-		if (g_env[i] != NULL)
-			env_destroy(g_env[i]);
+		if (g_shell.env[i] != NULL)
+			env_destroy(g_shell.env[i]);
 		++i;
 	}
-	free(g_env);
-	g_env = NULL;
+	free(g_shell.env);
+	g_shell.env = NULL;
 }

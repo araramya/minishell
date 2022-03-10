@@ -6,11 +6,13 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 13:14:01 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/09 16:44:31 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 11:53:46 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_shell	g_shell = (t_shell){0};
 
 /**
  * @brief Handle builtins
@@ -76,39 +78,34 @@ int	shell_command(t_node *command)
  * @param self 
  * @param input 
  */
-int	shell_execute(t_shell *self, char *input)
+int	shell_execute(char *input)
 {
 	t_token	*tokens;
 	t_node	*node;
-	char	*temp;
 	int		code;
 
 	if (ft_strlen(input) == 0)
 		return (0);
 	code = 2;
-	lexer_init(&self->lexer, input, false);
-	tokens = lexer_lex(&self->lexer);
-	if (tokens && !self->lexer.error)
+	lexer_init(&g_shell.lexer, input, false);
+	tokens = lexer_lex(&g_shell.lexer);
+	if (tokens && !g_shell.lexer.error)
 	{
-		node = parser_parse(&self->parser, tokens);
-		if (!self->parser.error && node && self->parser.heredoc_exit != 2)
+		node = parser_parse(&g_shell.parser, tokens);
+		if (!g_shell.parser.error && node && g_shell.parser.heredoc_exit != 2)
 			code = shell_command(node);
 		node_destroy(node);
 	}
-	temp = ft_itoa(code);
-	env_set("?", temp);
-	free(temp);
 	token_destroy(tokens);
 	return (code);
 }
 
-void	shell_init(t_shell *self, char **envp)
+void	shell_init(char **envp)
 {
 	size_t	i;
 
-	self->code = 0;
 	env_init();
-	env_set("?", "0");
+	g_shell.code = ft_strdup("0");
 	i = 0;
 	while (envp[i] != NULL)
 		env_from_string(envp[i++]);
@@ -120,9 +117,10 @@ void	shell_init(t_shell *self, char **envp)
  * @param self 
  * @return int 
  */
-int	shell_start(t_shell *self)
+int	shell_start(void)
 {
 	char	*input;
+	int		code;
 
 	while (true)
 	{
@@ -135,10 +133,15 @@ int	shell_start(t_shell *self)
 		if (ft_strlen(input) > 0)
 			add_history(input);
 		signal_ignore();
-		shell_execute(self, input);
+		code = shell_execute(input);
+		if (g_shell.code)
+			free(g_shell.code);
+		g_shell.code = ft_itoa(code);
 		signal_shell();
 		free(input);
 	}
+	if (g_shell.code)
+		free(g_shell.code);
 	env_deinit();
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:35:48 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/02 20:04:11 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 12:38:10 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_env	*env_pair(char *key, char *value)
 	if (!env)
 		return (NULL);
 	env->key = ft_strdup(key);
-	env->value = ft_strdup(value);
+	env->value = env_value_or_null(value);
 	env->next = NULL;
 	return (env);
 }
@@ -52,14 +52,14 @@ void	env_destroy(t_env *env)
 	free(env);
 }
 
-void	env_unset(t_env ***env, char *key)
+void	env_unset(char *key)
 {
 	size_t	bucket;
 	t_env	*entry;
 	t_env	*prev;
 
 	bucket = env_hash(key);
-	entry = *env[bucket];
+	entry = g_shell.env[bucket];
 	prev = NULL;
 	while (entry)
 	{
@@ -71,7 +71,7 @@ void	env_unset(t_env ***env, char *key)
 			free(entry->value);
 			free(entry);
 			if (!prev)
-				*env[bucket] = NULL;
+				g_shell.env[bucket] = NULL;
 			return ;
 		}
 		prev = entry;
@@ -79,13 +79,20 @@ void	env_unset(t_env ***env, char *key)
 	}
 }
 
-char	*env_item_to_string(t_env *env)
+char	*env_item_to_string(t_env *env, bool export_command)
 {
 	t_string	string;
 
 	string_init(&string);
 	string_push(&string, env->key);
-	string_push(&string, "=");
-	string_push(&string, env->value);
+	if (env->value != NULL)
+	{
+		string_push(&string, "=");
+		if (export_command)
+			string_push(&string, "\"");
+		string_push(&string, env->value);
+		if (export_command)
+			string_push(&string, "\"");
+	}
 	return (string_freeze(&string));
 }

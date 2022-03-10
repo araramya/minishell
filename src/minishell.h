@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/09 20:51:45 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 12:36:47 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,32 +233,36 @@ typedef struct s_env
 
 void				env_init(void);
 void				env_set(char *key, char *value);
-void				env_unset(t_env ***env, char *key);
+void				env_unset(char *key);
 char				*env_get(char *key);
 void				env_deinit(void);
 void				env_destroy(t_env *env);
 t_env				*env_pair(char *key, char *value);
 size_t				env_hash(char *key);
-char				**env_to_string(void);
-char				*env_item_to_string(t_env *env);
+char				**env_to_string(bool export_command);
+char				*env_item_to_string(t_env *env, bool export_command);
 int					env_from_string(char *string);
+char				*env_value_or_null(char *value);
 
 // SHELL
 typedef struct s_shell
 {
-	int				code;
+	char			*code;
 	t_lexer			lexer;
 	t_parser		parser;
+	t_env			**env;
 }					t_shell;
 
-void				shell_init(t_shell *self, char **envp);
+extern t_shell		g_shell;
+
+void				shell_init(char **envp);
 int					shell_pipe(t_node *command);
 int					shell_redirection(t_node *command);
 int					shell_command(t_node *command);
 int					shell_builtin(int argc, char **argv);
 int					shell_bin(char **argv);
-int					shell_start(t_shell *self);
-int					shell_execute(t_shell *self, char *input);
+int					shell_start(void);
+int					shell_execute(char *input);
 
 // EXPANDER
 t_list				*expander_from_env(t_list *list, char *env);
