@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:56:12 by marvin@42.f       #+#    #+#             */
-/*   Updated: 2022/03/07 12:36:51 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 13:53:02 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	builtin_cd(int argc, char **argv)
 		home = getenv("HOME");
 	if (chdir(home) != 0)
 	{
-		perror("cd");
+		error_print_code(NAME, "cd", NULL);
 		return (1);
 	}
 	return (0);

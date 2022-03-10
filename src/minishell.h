@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 19:26:55 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/10 12:36:47 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 15:19:31 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <termios.h>
 # include <unistd.h>
 
+# define NAME "minishell"
 # define SHELL_TMP "/tmp/minishell"
 
 // LIBFT
@@ -298,5 +299,9 @@ void				signal_shell(void);
 void				signal_default(void);
 void				signal_ignore(void);
 void				signal_heredoc(void);
+
+// ERROR
+void				error_print(char *msg1, char *msg2, char *msg3, char *msg4);
+void				error_print_code(char *msg1, char *msg2, char *msg3);
 
 #endif // MINISHELL_H77

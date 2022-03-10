@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 20:39:24 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/10 12:56:29 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 15:11:27 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,19 @@ static char	*shell_find_bin(char *f)
 	return (found);
 }
 
+static int	shell_get_code(int code)
+{
+	if (WIFSIGNALED(code))
+	{
+		if (WTERMSIG(code) == 3)
+			ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
+		else if (WTERMSIG(code) == 2)
+			ft_putstr_fd("\n", STDERR_FILENO);
+		return (128 + WTERMSIG(code));
+	}
+	return (WEXITSTATUS(code));
+}
+
 int	shell_bin(char **argv)
 {
 	char	*path;
@@ -58,8 +71,7 @@ int	shell_bin(char **argv)
 	path = shell_find_bin(argv[0]);
 	if (!path)
 	{
-		ft_putstr_fd(argv[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
+		error_print(NAME, argv[0], "command not found", NULL);
 		return (127);
 	}
 	envp = env_to_string(false);
@@ -67,11 +79,11 @@ int	shell_bin(char **argv)
 	{
 		signal_default();
 		execve(path, argv, envp);
-		perror("execvp failed");
+		error_print_code(NAME, "execvp", NULL);
 		exit(1);
 	}
 	wait(&code);
 	free(path);
 	argument_destroy(envp);
-	return (WEXITSTATUS(code));
+	return (shell_get_code(code));
 }

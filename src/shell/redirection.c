@@ -6,7 +6,7 @@
 /*   By: aabajyan <aabajyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 21:10:34 by aabajyan          #+#    #+#             */
-/*   Updated: 2022/03/09 20:48:37 by aabajyan         ###   ########.fr       */
+/*   Updated: 2022/03/10 13:53:25 by aabajyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	shell_redirection(t_node *command)
 		fd = open(tfile, shell_get_flag(command->redirect_kind), 0755);
 		if (fd == -1)
 		{
-			perror(tfile);
+			error_print_code(NAME, tfile, NULL);
 			exit(1);
 		}
 		dup2(fd, shell_get_fd(command->redirect_kind));
