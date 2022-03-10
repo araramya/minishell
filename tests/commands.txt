@@ -47,7 +47,10 @@ export LOL="ls -la"; $LOL
 export LOL="ls -la"; "$LOL"
 export LOL="ls -la | grep README"; $LOL;
 export TEST=LOL; echo $TEST
+export LOL="               xd        "; echo $LOL
+export a b= c=d; env | grep -w b=; env | grep -w c=d; export | grep -w "declare -x a";
 pwd
+pwd pwd pwd
 cd dasdsadsad
 cd src
 cd ./src
